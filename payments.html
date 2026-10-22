@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments | Popoye Insurance</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="payments.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">P</div>
+            <div>
+                <strong>Popoye Insurance</strong>
+                <small>Renewal Management</small>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="customers.html">Customers</a>
+            <a href="policies.html">Policies</a>
+            <a href="payments.html" class="active">Payments</a>
+            <a href="transactions.html">Transactions</a>
+            <a href="reminders.html">WhatsApp Reminders</a>
+            <a href="reports.html">Reports & Analytics</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <small>Demo Version</small>
+            <p>Popoye Insurance</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+            <div>
+                <p class="eyebrow">PAYMENT MANAGEMENT</p>
+                <h1>Payments</h1>
+                <p>Manage renewal payment records and payment links.</p>
+            </div>
+
+            <button class="btn btn-primary" id="createPaymentBtn">
+                + Create Payment
+            </button>
+        </header>
+
+        <div class="dashboard-notice">
+            <strong>Demo mode:</strong>
+            Payments on this page are simulated. No real money is collected.
+        </div>
+
+        <!-- Payment Summary -->
+        <section class="payment-summary">
+
+            <article class="payment-summary-card">
+                <span>Total Payments</span>
+                <h2 id="totalPaymentCount">0</h2>
+            </article>
+
+            <article class="payment-summary-card">
+                <span>Paid</span>
+                <h2 id="paidPaymentCount">0</h2>
+            </article>
+
+            <article class="payment-summary-card">
+                <span>Pending</span>
+                <h2 id="pendingPaymentCount">0</h2>
+            </article>
+
+            <article class="payment-summary-card">
+                <span>Amount Collected</span>
+                <h2 id="collectedAmount">₹0</h2>
+            </article>
+
+        </section>
+
+        <!-- Create Payment Form -->
+        <section class="panel payment-form-panel" id="paymentFormPanel" hidden>
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Create Payment Request</h2>
+                    <p>Create a demo payment request for a customer.</p>
+                </div>
+            </div>
+
+            <form id="paymentForm">
+
+                <div class="payment-form-grid">
+
+                    <div class="form-group">
+                        <label for="paymentCustomer">Customer Name *</label>
+                        <input
+                            type="text"
+                            id="paymentCustomer"
+                            placeholder="Enter customer name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentVehicle">Vehicle Number *</label>
+                        <input
+                            type="text"
+                            id="paymentVehicle"
+                            placeholder="TN 38 AB 1234"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentAmount">Premium Amount (₹) *</label>
+                        <input
+                            type="number"
+                            id="paymentAmount"
+                            min="1"
+                            step="0.01"
+                            placeholder="Enter amount"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentDueDate">Payment Due Date *</label>
+                        <input type="date" id="paymentDueDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentStatus">Payment Status</label>
+                        <select id="paymentStatus" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Paid">Paid (Demo Only)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="payment-form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Save Payment
+                    </button>
+
+                    <button type="button" class="btn" id="cancelPaymentBtn">
+                        Cancel
+                    </button>
+                </div>
+
+                <p id="paymentMessage" role="status"></p>
+
+            </form>
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="panel payment-list-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Payment Records</h2>
+                    <p>View payment requests and their current status.</p>
+                </div>
+            </div>
+
+            <div class="payment-toolbar">
+
+                <input
+                    type="search"
+                    id="paymentSearch"
+                    placeholder="Search customer or vehicle..."
+                    aria-label="Search payments"
+                >
+
+                <select id="paymentStatusFilter" aria-label="Filter payment status">
+                    <option value="All">All Payments</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                </select>
+
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Customer</th>
+                            <th>Vehicle Number</th>
+                            <th>Amount</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Payment Link</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="paymentTableBody">
+                        <tr>
+                            <td colspan="7">Loading payments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            © 2026 Popoye Insurance · Demo application
+        </footer>
+
+    </main>
+</div>
+
+<script src="js/payments.js"></script>
+</body>
+</html>

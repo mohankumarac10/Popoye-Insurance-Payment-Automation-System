@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports & Analytics | Popoye Insurance</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="reports.css">
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">P</div>
+            <div>
+                <h2>Popoye Insurance</h2>
+                <p>Renewal Management</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="customers.html">Customers</a>
+            <a href="policies.html">Policies</a>
+            <a href="payments.html">Payments</a>
+            <a href="transactions.html">Transactions</a>
+            <a href="reminders.html">WhatsApp Reminders</a>
+            <a href="reports.html" class="active">Reports &amp; Analytics</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>Demo Administration Panel</p>
+        </div>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+            <div>
+                <p class="page-eyebrow">BUSINESS PERFORMANCE</p>
+                <h1>Reports &amp; Analytics</h1>
+                <p>Track renewal activity and demo payment performance.</p>
+            </div>
+
+            <button type="button" id="refreshReports"
+                    class="btn btn-primary">
+                Refresh Reports
+            </button>
+        </header>
+
+        <div class="reports-notice">
+            <strong>Demo data:</strong>
+            These reports use records stored in your current browser.
+            Payment totals are not independently verified by a bank
+            or payment gateway.
+        </div>
+
+        <!-- Overview cards -->
+        <section class="reports-summary">
+
+            <article class="report-stat">
+                <span>Total Customers</span>
+                <h2 id="reportCustomers">0</h2>
+                <p>Customer records</p>
+            </article>
+
+            <article class="report-stat">
+                <span>Total Policies</span>
+                <h2 id="reportPolicies">0</h2>
+                <p>Policy records</p>
+            </article>
+
+            <article class="report-stat">
+                <span>Paid Transactions</span>
+                <h2 id="reportPaidCount">0</h2>
+                <p>Marked paid in the demo</p>
+            </article>
+
+            <article class="report-stat">
+                <span>Demo Collections</span>
+                <h2 id="reportCollection">₹0</h2>
+                <p>Total amount marked paid</p>
+            </article>
+
+        </section>
+
+        <!-- Report cards -->
+        <section class="reports-grid">
+
+            <article class="panel report-panel">
+                <div class="report-panel-heading">
+                    <div>
+                        <h2>Payment Overview</h2>
+                        <p>Payment status breakdown</p>
+                    </div>
+                </div>
+
+                <div class="report-metric">
+                    <span>Paid Payments</span>
+                    <strong id="reportPaidAmount">₹0</strong>
+                </div>
+
+                <div class="report-progress-track">
+                    <div class="report-progress-fill"
+                         id="reportPaidProgress"></div>
+                </div>
+
+                <div class="report-metric">
+                    <span>Pending Payments</span>
+                    <strong id="reportPendingAmount">₹0</strong>
+                </div>
+
+                <div class="report-progress-track">
+                    <div class="report-progress-fill pending-fill"
+                         id="reportPendingProgress"></div>
+                </div>
+
+                <p class="report-footnote" id="paymentReportNote">
+                    Payment statistics will appear here.
+                </p>
+            </article>
+
+            <article class="panel report-panel">
+                <div class="report-panel-heading">
+                    <div>
+                        <h2>Renewal Overview</h2>
+                        <p>Customer policy expiry status</p>
+                    </div>
+                </div>
+
+                <div class="report-metric">
+                    <span>Active / Not Due Soon</span>
+                    <strong id="reportActiveRenewals">0</strong>
+                </div>
+
+                <div class="report-progress-track">
+                    <div class="report-progress-fill"
+                         id="reportActiveProgress"></div>
+                </div>
+
+                <div class="report-metric">
+                    <span>Due Within 30 Days</span>
+                    <strong id="reportDueRenewals">0</strong>
+                </div>
+
+                <div class="report-progress-track">
+                    <div class="report-progress-fill upcoming-fill"
+                         id="reportDueProgress"></div>
+                </div>
+
+                <div class="report-metric">
+                    <span>Expired</span>
+                    <strong id="reportExpiredRenewals">0</strong>
+                </div>
+
+                <div class="report-progress-track">
+                    <div class="report-progress-fill expired-fill"
+                         id="reportExpiredProgress"></div>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Detailed table -->
+        <section class="panel reports-table-panel">
+
+            <div class="report-panel-heading">
+                <div>
+                    <h2>Payment Report</h2>
+                    <p>Review payment records saved in this browser.</p>
+                </div>
+
+                <button type="button" id="exportReports"
+                        class="btn btn-secondary">
+                    Export CSV
+                </button>
+            </div>
+
+            <div class="reports-toolbar">
+                <input
+                    type="search"
+                    id="reportSearch"
+                    placeholder="Search payment ID, customer or vehicle..."
+                    aria-label="Search payment report">
+
+                <select id="reportStatusFilter"
+                        aria-label="Filter payment report by status">
+                    <option value="all">All Statuses</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+
+            <p id="reportsMessage" class="reports-message"
+               role="status" aria-live="polite"></p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Customer</th>
+                            <th>Vehicle Number</th>
+                            <th>Amount</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="reportsTableBody">
+                        <tr>
+                            <td colspan="6">Loading report data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 Popoye Insurance. Reports demo.</p>
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="js/reports.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+
+/* =====================================
+   POPOYE INSURANCE - SETTINGS STYLES
+   File: css/settings.css
+===================================== */
+
+.settings-main {
+    padding-bottom: 35px;
+}
+
+.settings-breadcrumb {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.settings-admin-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: 20px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.settings-notice {
+    padding: 17px 20px;
+    margin-bottom: 24px;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.settings-notice strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.settings-notice p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.settings-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.035);
+}
+
+.settings-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 20px;
+    margin-bottom: 23px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.settings-heading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    background: #eff6ff;
+    border-radius: 12px;
+    font-size: 22px;
+}
+
+.settings-card-heading h2 {
+    margin: 0 0 5px;
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.settings-card-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.settings-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.settings-form-grid .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.settings-form-grid .form-group label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.settings-form-grid input,
+.settings-form-grid select {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0f172a;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.settings-form-grid input:focus,
+.settings-form-grid select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.settings-form-grid input::placeholder {
+    color: #94a3b8;
+}
+
+.settings-form-grid small {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.settings-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 25px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    cursor: pointer;
+}
+
+.settings-toggle-row span {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.settings-toggle-row strong {
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.settings-toggle-row small {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.settings-toggle-row input {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.settings-actions button {
+    min-height: 43px;
+    padding: 11px 20px;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.settings-actions .btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.settings-actions .btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.settings-actions .btn-secondary {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+}
+
+.settings-actions .btn-secondary:hover {
+    background: #f1f5f9;
+}
+
+.settings-message {
+    min-height: 22px;
+    margin-top: 13px;
+    color: #15803d;
+    font-size: 13px;
+    text-align: right;
+}
+
+.settings-message.error {
+    color: #b91c1c;
+}
+
+/* Tablet screens */
+@media (max-width: 900px) {
+    .settings-card {
+        padding: 20px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 600px) {
+    .settings-main {
+        padding: 16px;
+    }
+
+    .settings-main .dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .settings-form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .settings-card {
+        padding: 17px;
+        border-radius: 11px;
+    }
+
+    .settings-card-heading h2 {
+        font-size: 16px;
+    }
+
+    .settings-toggle-row {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .settings-actions {
+        flex-direction: column-reverse;
+    }
+
+    .settings-actions button {
+        width: 100%;
+    }
+
+    .settings-message {
+        text-align: left;
+    }
+}

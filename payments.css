@@ -1,0 +1,226 @@
+
+/* =====================================
+   POPOYE INSURANCE - PAYMENTS PAGE
+===================================== */
+
+/* Payment summary cards */
+.payment-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin: 24px 0;
+}
+
+.payment-summary-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(20, 45, 90, 0.04);
+}
+
+.payment-summary-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.payment-summary-card h2 {
+    margin: 0;
+    color: #172554;
+    font-size: 26px;
+    overflow-wrap: anywhere;
+}
+
+/* Payment form */
+.payment-form-panel {
+    margin-bottom: 24px;
+}
+
+.payment-form-panel[hidden] {
+    display: none;
+}
+
+.payment-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.payment-form-grid label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.payment-form-grid input,
+.payment-form-grid select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #172554;
+    font: inherit;
+}
+
+.payment-form-grid input:focus,
+.payment-form-grid select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.payment-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* Payment messages */
+#paymentMessage {
+    margin-top: 14px;
+    font-size: 14px;
+}
+
+/* Payment records */
+.payment-list-panel {
+    margin-bottom: 24px;
+}
+
+.payment-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.payment-toolbar input,
+.payment-toolbar select {
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #334155;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.payment-toolbar input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.payment-toolbar select {
+    min-width: 160px;
+}
+
+.payment-toolbar input:focus,
+.payment-toolbar select:focus {
+    outline: 2px solid #bfdbfe;
+    border-color: #2563eb;
+}
+
+/* Table layout */
+.payment-list-panel .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.payment-list-panel table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.payment-list-panel th {
+    padding: 15px;
+    background: #f8fafc;
+    color: #64748b;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.payment-list-panel td {
+    padding: 15px;
+    color: #334155;
+    font-size: 14px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.payment-list-panel tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* Payment status badges */
+.payment-list-panel .badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.payment-list-panel .badge-paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.payment-list-panel .badge-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Payment link buttons */
+.payment-link {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 7px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.payment-link:hover {
+    background: #dbeafe;
+}
+
+/* Responsive design */
+@media (max-width: 1100px) {
+    .payment-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .payment-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .payment-toolbar input,
+    .payment-toolbar select {
+        width: 100%;
+    }
+}

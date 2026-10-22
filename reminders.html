@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WhatsApp Reminders | Popoye Insurance</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="reminders.css">
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">P</div>
+
+            <div>
+                <h2>Popoye Insurance</h2>
+                <p>Renewal Management</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="customers.html">Customers</a>
+            <a href="policies.html">Policies</a>
+            <a href="payments.html">Payments</a>
+            <a href="transactions.html">Transactions</a>
+            <a href="reminders.html" class="active">WhatsApp Reminders</a>
+            <a href="reports.html">Reports &amp; Analytics</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>Demo Administration Panel</p>
+        </div>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+            <div>
+                <p class="page-eyebrow">CUSTOMER COMMUNICATION</p>
+                <h1>WhatsApp Renewal Reminders</h1>
+                <p>Prepare renewal messages and manage reminder records.</p>
+            </div>
+
+            <a href="customers.html" class="btn btn-primary">
+                View Customers
+            </a>
+        </header>
+
+        <!-- Demo notice -->
+        <div class="reminder-notice">
+            <strong>Integration notice:</strong>
+            This page is a front-end demo. It does not send WhatsApp
+            messages automatically. Live sending requires a secure backend
+            connected to your AiSensy account.
+        </div>
+
+        <!-- Summary cards -->
+        <section class="reminder-summary">
+
+            <article class="reminder-stat">
+                <span>Total Customers</span>
+                <h2 id="reminderTotal">0</h2>
+                <p>Customer records in this browser</p>
+            </article>
+
+            <article class="reminder-stat">
+                <span>Renewals Due Soon</span>
+                <h2 id="reminderDueSoon">0</h2>
+                <p>Expiry within the next 30 days</p>
+            </article>
+
+            <article class="reminder-stat">
+                <span>Expired Policies</span>
+                <h2 id="reminderExpired">0</h2>
+                <p>Expiry date has passed</p>
+            </article>
+
+            <article class="reminder-stat">
+                <span>Prepared Messages</span>
+                <h2 id="reminderPrepared">0</h2>
+                <p>Messages saved in this browser</p>
+            </article>
+
+        </section>
+
+        <!-- Message preparation -->
+        <section class="panel reminder-compose">
+
+            <div class="reminder-section-heading">
+                <div>
+                    <h2>Prepare Renewal Message</h2>
+                    <p>Select a customer to prepare their reminder.</p>
+                </div>
+            </div>
+
+            <form id="reminderForm">
+
+                <div class="reminder-form-grid">
+
+                    <div class="form-group">
+                        <label for="reminderCustomer">Customer</label>
+                        <select id="reminderCustomer" required>
+                            <option value="">Select a customer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reminderType">Reminder Type</label>
+                        <select id="reminderType" required>
+                            <option value="upcoming">Upcoming Renewal</option>
+                            <option value="expired">Expired Policy</option>
+                            <option value="payment">Payment Pending</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="reminderMessage">Message Preview</label>
+
+                    <textarea
+                        id="reminderMessage"
+                        rows="7"
+                        placeholder="Select a customer to prepare a message..."
+                        required></textarea>
+
+                    <p class="reminder-help">
+                        Review the customer details and message before using it.
+                    </p>
+                </div>
+
+                <div class="reminder-form-actions">
+
+                    <button type="button"
+                            id="generateReminderBtn"
+                            class="btn btn-secondary">
+                        Generate Message
+                    </button>
+
+                    <button type="submit"
+                            id="saveReminderBtn"
+                            class="btn btn-primary">
+                        Save Reminder
+                    </button>
+
+                </div>
+
+                <p id="reminderFormMessage"
+                   class="reminder-message"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </form>
+
+        </section>
+
+        <!-- Customer renewal list -->
+        <section class="panel reminder-list-panel">
+
+            <div class="reminder-section-heading">
+                <div>
+                    <h2>Customer Renewal List</h2>
+                    <p>Check policy expiry dates and prepare reminders.</p>
+                </div>
+            </div>
+
+            <div class="reminder-toolbar">
+
+                <input
+                    type="search"
+                    id="reminderSearch"
+                    placeholder="Search customer or vehicle..."
+                    aria-label="Search renewal list">
+
+                <select id="reminderFilter"
+                        aria-label="Filter renewal list">
+                    <option value="all">All Customers</option>
+                    <option value="upcoming">Due Within 30 Days</option>
+                    <option value="expired">Expired</option>
+                </select>
+
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Phone Number</th>
+                            <th>Vehicle Number</th>
+                            <th>Premium</th>
+                            <th>Expiry Date</th>
+                            <th>Renewal Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="reminderTableBody">
+                        <tr>
+                            <td colspan="7">Loading customer records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 Popoye Insurance. Renewal reminder demo.</p>
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="js/reminders.js"></script>
+
+</body>
+</html>

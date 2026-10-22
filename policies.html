@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policies | Popoye Insurance</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="policies.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <span class="brand-icon">P</span>
+            <span>Popoye Insurance</span>
+        </a>
+
+        <p class="sidebar-label">MAIN MENU</p>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">⌂ <span>Home</span></a>
+            <a href="dashboard.html">▦ <span>Dashboard</span></a>
+            <a href="customers.html">♙ <span>Customers</span></a>
+            <a href="policies.html" class="active">▤ <span>Policies</span></a>
+            <a href="payments.html">₹ <span>Payments</span></a>
+            <a href="transactions.html">⇄ <span>Transactions</span></a>
+            <a href="reminders.html">✉ <span>WhatsApp Reminders</span></a>
+            <a href="reports.html">▥ <span>Reports & Analytics</span></a>
+            <a href="settings.html">⚙ <span>Settings</span></a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="admin-avatar">A</div>
+            <div>
+                <strong>Administrator</strong>
+                <small>Admin Account</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+            <div>
+                <p class="welcome-label">POPOYE INSURANCE / MANAGEMENT</p>
+                <h1>Insurance Policies</h1>
+                <p class="subtitle">
+                    Track policy details and upcoming two-wheeler renewals.
+                </p>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="addPolicyBtn">
+                + Add Policy
+            </button>
+        </header>
+
+        <div class="dashboard-notice">
+            <strong>Demo mode:</strong>
+            These are sample policies, not live insurance contracts.
+        </div>
+
+        <!-- Summary cards -->
+        <section class="policy-summary">
+
+            <article class="policy-summary-card">
+                <span>Total Policies</span>
+                <h2 id="totalPolicyCount">0</h2>
+            </article>
+
+            <article class="policy-summary-card">
+                <span>Active Policies</span>
+                <h2 id="activePolicyCount">0</h2>
+            </article>
+
+            <article class="policy-summary-card">
+                <span>Renewal Pending</span>
+                <h2 id="pendingPolicyCount">0</h2>
+            </article>
+
+            <article class="policy-summary-card">
+                <span>Expired Policies</span>
+                <h2 id="expiredPolicyCount">0</h2>
+            </article>
+
+        </section>
+
+        <!-- Add policy form -->
+        <section class="dashboard-panel policy-form-panel" id="policyFormPanel" hidden>
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Add Insurance Policy</h2>
+                    <p>Enter the policy and customer details.</p>
+                </div>
+            </div>
+
+            <form id="policyForm">
+
+                <div class="policy-form-grid">
+
+                    <div class="form-group">
+                        <label for="policyNumber">Policy Number *</label>
+                        <input
+                            type="text"
+                            id="policyNumber"
+                            required
+                            maxlength="40"
+                            placeholder="Example: DEMO-POL-1006"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyCustomer">Customer Name *</label>
+                        <input
+                            type="text"
+                            id="policyCustomer"
+                            required
+                            maxlength="100"
+                            placeholder="Enter customer name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyVehicle">Vehicle Number *</label>
+                        <input
+                            type="text"
+                            id="policyVehicle"
+                            required
+                            maxlength="15"
+                            placeholder="TN 38 AB 1234"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyProvider">Insurance Provider *</label>
+                        <input
+                            type="text"
+                            id="policyProvider"
+                            required
+                            maxlength="100"
+                            placeholder="Enter provider name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyPremium">Premium Amount (₹) *</label>
+                        <input
+                            type="number"
+                            id="policyPremium"
+                            required
+                            min="1"
+                            max="1000000"
+                            step="1"
+                            placeholder="Enter premium"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyExpiry">Expiry Date *</label>
+                        <input type="date" id="policyExpiry" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policyStatus">Policy Status *</label>
+                        <select id="policyStatus" required>
+                            <option value="Active">Active</option>
+                            <option value="Pending">Renewal Pending</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="policy-form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Save Policy
+                    </button>
+
+                    <button type="button" class="btn btn-light" id="cancelPolicyBtn">
+                        Cancel
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Search and filters -->
+        <section class="dashboard-panel policy-list-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Policy Records</h2>
+                    <p>Search and filter insurance policies.</p>
+                </div>
+            </div>
+
+            <div class="policy-toolbar">
+
+                <input
+                    type="search"
+                    id="policySearch"
+                    placeholder="Search policy, customer or vehicle..."
+                    aria-label="Search policies"
+                >
+
+                <select id="policyStatusFilter" aria-label="Filter policy status">
+                    <option value="All">All Statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Pending">Renewal Pending</option>
+                    <option value="Expired">Expired</option>
+                </select>
+
+            </div>
+
+            <div id="policyMessage" class="policy-message" role="status" aria-live="polite"></div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Policy Number</th>
+                            <th>Customer</th>
+                            <th>Vehicle Number</th>
+                            <th>Insurance Provider</th>
+                            <th>Premium</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="policyTableBody">
+                        <tr>
+                            <td colspan="7">Loading policy records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            © 2026 Popoye Insurance · Policy Management
+        </footer>
+
+    </main>
+
+    <script src="js/policies.js"></script>
+</body>
+</html>

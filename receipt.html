@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Receipt | Popoye Insurance</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="payment.css">
+    <link rel="stylesheet" href="receipt.css">
+</head>
+<body class="customer-payment-page">
+
+    <!-- Header -->
+    <header class="payment-header">
+        <a href="index.html" class="payment-brand">
+            <span class="brand-icon">P</span>
+            <span>
+                <strong>Popoye Insurance</strong>
+                <small>Two-Wheeler Insurance Renewal</small>
+            </span>
+        </a>
+
+        <span class="secure-label">
+            Demo Receipt
+        </span>
+    </header>
+
+    <!-- Receipt -->
+    <main class="customer-payment-main">
+
+        <section class="customer-payment-card receipt-card">
+
+            <div class="receipt-heading">
+                <div class="receipt-success-icon">✓</div>
+
+                <p class="eyebrow">PAYMENT SUMMARY</p>
+
+                <h1>Payment Receipt</h1>
+
+                <p id="receiptMessage">
+                    Loading payment details...
+                </p>
+            </div>
+
+            <div id="receiptStatus" class="receipt-status">
+                DEMO RECEIPT
+            </div>
+
+            <div class="receipt-amount">
+                <span>Premium Amount</span>
+                <h2 id="receiptAmount">₹0.00</h2>
+            </div>
+
+            <div class="receipt-details">
+
+                <div class="receipt-row">
+                    <span>Receipt Reference</span>
+                    <strong id="receiptReference">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>Customer Name</span>
+                    <strong id="receiptCustomer">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>Vehicle Number</span>
+                    <strong id="receiptVehicle">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>Due Date</span>
+                    <strong id="receiptDueDate">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>Payment Status</span>
+                    <strong id="receiptPaymentStatus">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>Payment Date</span>
+                    <strong id="receiptPaymentDate">-</strong>
+                </div>
+
+            </div>
+
+            <div class="receipt-warning">
+                <strong>Demo receipt only</strong>
+                <p>
+                    This receipt reflects a browser-based simulation.
+                    It is not proof of a real payment or an insurance
+                    policy renewal.
+                </p>
+            </div>
+
+            <div class="receipt-actions">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="printReceiptBtn">
+                    Print Receipt
+                </button>
+
+                <a href="index.html" class="payment-back-link">
+                    Back to Home
+                </a>
+            </div>
+
+        </section>
+
+        <p class="receipt-footer">
+            © 2026 Popoye Insurance · Demo application
+        </p>
+
+    </main>
+
+    <script src="js/receipt.js"></script>
+
+</body>
+</html>
