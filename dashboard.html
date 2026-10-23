@@ -1,90 +1,190 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Popoye Insurance</title>
+  <title>Popoye Insurance | Dashboard</title>
+
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="dashboard-page">
+
   <aside class="sidebar">
     <div class="brand">
-      <img src="images/logo.png" alt="Popoye Insurance Logo">
-      <span>Popoye Insurance</span>
+      <img src="assets/logo.png" alt="Popoye Insurance Logo"
+           onerror="this.style.display='none'">
+      <div>
+        <h2>Popoye</h2>
+        <span>INSURANCE</span>
+      </div>
     </div>
-    <nav>
-      <a class="active" href="dashboard.html">Dashboard</a>
-      <a href="customers.html">Customers</a>
-      <a href="policies.html">Policies</a>
-      <a href="payments.html">Payments</a>
-      <a href="transactions.html">Transactions</a>
-      <a href="reports.html">Reports</a>
-      <a href="reminders.html">Automation</a>
-      <a href="settings.html">Settings</a>
+
+    <p class="nav-heading">MAIN MENU</p>
+    <nav class="navigation">
+      <a href="index.html" class="nav-link active">▦ <span>Dashboard</span></a>
+      <a href="customers.html" class="nav-link">♙ <span>Customers</span></a>
+      <a href="policies.html" class="nav-link">▤ <span>Policies</span></a>
+      <a href="payments.html" class="nav-link">₹ <span>Payments</span></a>
+      <a href="transactions.html" class="nav-link">⇄ <span>Transactions</span></a>
+      <a href="reminders.html" class="nav-link">♧ <span>Reminders</span></a>
+      <a href="reports.html" class="nav-link">▥ <span>Reports</span></a>
+      <a href="settings.html" class="nav-link">⚙ <span>Settings</span></a>
     </nav>
-    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+
+    <div class="sidebar-footer">
+      <div class="admin-avatar">PA</div>
+      <div>
+        <strong>Administrator</strong>
+        <small>Popoye Insurance</small>
+      </div>
+    </div>
   </aside>
 
-  <main class="main">
-    <header class="topbar">
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
       <div>
+        <p class="eyebrow">INSURANCE MANAGEMENT</p>
         <h1>Dashboard</h1>
-        <p>Welcome back! Here's your business overview.</p>
+        <p class="subtitle">Monitor renewals, collections and customer activity.</p>
       </div>
-      <span class="status">Admin Panel</span>
+      <div class="topbar-actions">
+        <span class="today-date" id="todayDate"></span>
+        <a href="customers.html" class="primary-button">+ Add Customer</a>
+      </div>
     </header>
 
-    <section class="stats">
-      <article class="stat-card">
-        <p>Total Customers</p>
-        <h2 id="totalCustomers">250</h2>
-        <span>Registered customers</span>
+    <section class="welcome-banner">
+      <div>
+        <span class="welcome-tag">YOUR BUSINESS OVERVIEW</span>
+        <h2>Welcome to Popoye Insurance</h2>
+        <p>Manage two-wheeler policy renewals from one place.</p>
+      </div>
+      <div class="banner-icon">🛵</div>
+    </section>
+
+    <section class="section-heading">
+      <div>
+        <h2>Business Overview</h2>
+        <p>Key numbers for your insurance renewal business</p>
+      </div>
+      <button class="outline-button" id="refreshDashboard">↻ Refresh Data</button>
+    </section>
+
+    <section class="stats-grid">
+      <article class="metric-card">
+        <div class="metric-top">
+          <span class="metric-icon blue">♙</span>
+          <span class="metric-label">CUSTOMERS</span>
+        </div>
+        <h3 id="totalCustomers">0</h3>
+        <p>Total registered customers</p>
+        <a href="customers.html">View customers →</a>
       </article>
-      <article class="stat-card">
-        <p>Active Policies</p>
-        <h2 id="activePolicies">186</h2>
-        <span>Currently active</span>
+
+      <article class="metric-card">
+        <div class="metric-top">
+          <span class="metric-icon purple">▤</span>
+          <span class="metric-label">ACTIVE POLICIES</span>
+        </div>
+        <h3 id="activePolicies">0</h3>
+        <p>Policies currently active</p>
+        <a href="policies.html">View policies →</a>
       </article>
-      <article class="stat-card">
-        <p>Payments Received</p>
-        <h2 id="paymentsReceived">₹1,25,000</h2>
-        <span>Demo collection total</span>
+
+      <article class="metric-card">
+        <div class="metric-top">
+          <span class="metric-icon green">₹</span>
+          <span class="metric-label">PAYMENTS COLLECTED</span>
+        </div>
+        <h3 id="totalCollected">₹0</h3>
+        <p>Recorded successful payments</p>
+        <a href="payments.html">View payments →</a>
       </article>
-      <article class="stat-card">
-        <p>Pending Renewals</p>
-        <h2 id="pendingRenewals">24</h2>
-        <span>Need follow-up</span>
+
+      <article class="metric-card">
+        <div class="metric-top">
+          <span class="metric-icon orange">◷</span>
+          <span class="metric-label">PENDING PAYMENTS</span>
+        </div>
+        <h3 id="pendingPayments">0</h3>
+        <p id="pendingAmount">Outstanding amount: ₹0</p>
+        <a href="payments.html">Follow up →</a>
       </article>
     </section>
 
-    <section class="panel">
-      <div class="section-heading">
-        <div>
-          <h2>Recent Renewals</h2>
-          <p>Latest customer renewal activity</p>
+    <section class="analytics-grid">
+      <article class="dashboard-panel chart-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Payment Collection</h2>
+            <p>Monthly successful payment totals</p>
+          </div>
+          <span class="chart-legend"><i></i> Collections</span>
         </div>
-        <a class="btn" href="customers.html">View Customers</a>
+        <div class="chart-container">
+          <canvas id="collectionChart"></canvas>
+        </div>
+      </article>
+
+      <article class="dashboard-panel renewal-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Renewal Overview</h2>
+            <p>Policy expiry monitoring</p>
+          </div>
+          <a href="policies.html">View all</a>
+        </div>
+        <div class="renewal-stat">
+          <div class="renewal-symbol expiring">!</div>
+          <div><span>Expiring in 30 days</span><strong id="expiringPolicies">0</strong></div>
+        </div>
+        <div class="renewal-stat">
+          <div class="renewal-symbol expired">×</div>
+          <div><span>Expired policies</span><strong id="expiredPolicies">0</strong></div>
+        </div>
+        <div class="renewal-stat">
+          <div class="renewal-symbol reminders">↗</div>
+          <div><span>Pending reminders</span><strong id="pendingReminders">0</strong></div>
+        </div>
+        <a href="reminders.html" class="secondary-button">Manage reminders →</a>
+      </article>
+    </section>
+
+    <section class="dashboard-panel transactions-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Recent Transactions</h2>
+          <p>Latest payment records available in this browser</p>
+        </div>
+        <a href="transactions.html">View transactions →</a>
       </div>
 
-      <div class="table-wrap">
-        <table>
+      <div class="table-wrapper">
+        <table class="dashboard-table">
           <thead>
             <tr>
-              <th>Customer</th>
-              <th>Vehicle Number</th>
-              <th>Premium</th>
-              <th>Expiry Date</th>
-              <th>Status</th>
+              <th>TRANSACTION ID</th>
+              <th>CUSTOMER</th>
+              <th>VEHICLE NUMBER</th>
+              <th>AMOUNT</th>
+              <th>DATE</th>
+              <th>STATUS</th>
             </tr>
           </thead>
-          <tbody id="recentRenewals"></tbody>
+          <tbody id="recentTransactions"></tbody>
         </table>
       </div>
+      <p id="transactionNotice" class="data-notice"></p>
     </section>
 
-    <p class="notice">Demo dashboard: figures are sample data, not live insurance or payment records.</p>
+    <footer class="dashboard-footer">
+      <span>© <span id="currentYear"></span> Popoye Insurance</span>
+      <span>Two-wheeler renewal management</span>
+    </footer>
   </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
