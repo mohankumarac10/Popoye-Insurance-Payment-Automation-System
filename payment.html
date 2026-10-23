@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .payment-card {
+      background: white;
+      border: 1px solid #e5eaf2;
+      border-radius: 16px;
+      padding: 24px;
+      color: #172b4d;
+    }
+
+    .payment-card h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .payment-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .payment-form label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+
+    .payment-form input,
+    .payment-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5dce7;
+      border-radius: 8px;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    .payment-amount {
+      font-size: 30px;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 12px 0;
+    }
+
+    .payment-note {
+      background: #eff6ff;
+      border-radius: 8px;
+      padding: 12px;
+      color: #1e40af;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .payment-table-wrap {
+      overflow-x: auto;
+    }
+
+    .payment-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    .payment-table th,
+    .payment-table td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid #e5eaf2;
+    }
+
+    .payment-table th {
+      background: #f8fafc;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-paid {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-failed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .payment-message {
+      margin-top: 12px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .payment-card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </a>
+
+    <p class="menu-label">WORKSPACE</p>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link" href="policies.html">Policies</a>
+      <a class="nav-link active" href="payment.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link" href="reminders.html">Reminders</a>
+      <a class="nav-link" href="reports.html">Reports</a>
+      <a class="nav-link" href="settings.html">Settings</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      Two-wheeler Insurance
+      <small>Management Portal</small>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">POPOYE / WORKSPACE</span>
+        <h1>Payments</h1>
+      </div>
+      <div class="admin"><span>Admin</span></div>
+    </header>
+
+    <section class="page-heading">
+      <div>
+        <h2>Insurance Payments</h2>
+        <p>Manage customer renewal payments and transaction records.</p>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-label">Total Transactions</div>
+        <div class="stat-value" id="totalPayments">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Successful Payments</div>
+        <div class="stat-value" id="successfulPayments">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Pending Payments</div>
+        <div class="stat-value" id="pendingPayments">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total Collected</div>
+        <div class="stat-value" id="totalCollected">₹0</div>
+      </div>
+    </section>
+
+    <div class="payment-grid">
+
+      <section class="payment-card">
+        <h2>Customer Payment</h2>
+        <p>Select a saved customer to load their renewal details.</p>
+
+        <form id="paymentForm" class="payment-form">
+
+          <div>
+            <label for="customerSelect">Customer</label>
+            <select id="customerSelect" required>
+              <option value="">Select customer</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="vehicleNumber">Vehicle Number</label>
+            <input id="vehicleNumber" readonly>
+          </div>
+
+          <div>
+            <label for="premiumAmount">Premium Amount (₹)</label>
+            <input id="premiumAmount" type="number" min="1" step="0.01" required>
+          </div>
+
+          <div>
+            <label for="paymentMethod">Payment Method</label>
+            <select id="paymentMethod" required>
+              <option value="UPI">UPI</option>
+              <option value="Debit/Credit Card">Debit/Credit Card</option>
+              <option value="Net Banking">Net Banking</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="paymentReference">Reference (optional)</label>
+            <input id="paymentReference" placeholder="Enter demo reference">
+          </div>
+
+          <div class="payment-note">
+            Demo mode only. This form does not transfer money or verify real payments.
+          </div>
+
+          <button class="btn btn-primary" type="submit">
+            Record Demo Payment
+          </button>
+
+          <p id="paymentMessage" class="payment-message" role="status"></p>
+        </form>
+      </section>
+
+      <section class="payment-card">
+        <h2>Payment Summary</h2>
+        <p>Review the payment details before recording a demo transaction.</p>
+
+        <div class="payment-amount" id="summaryAmount">₹0</div>
+
+        <p><strong>Customer:</strong> <span id="summaryCustomer">Not selected</span></p>
+        <p><strong>Vehicle:</strong> <span id="summaryVehicle">-</span></p>
+        <p><strong>Method:</strong> <span id="summaryMethod">UPI</span></p>
+        <p><strong>Status:</strong> Pending until recorded</p>
+
+        <div class="payment-note">
+          A real payment integration requires a payment gateway and secure backend verification.
+        </div>
+      </section>
+
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Payment History</h2>
+        <button class="btn" id="exportPayments">Export CSV</button>
+      </div>
+
+      <div class="toolbar">
+        <input id="paymentSearch" class="search"
+          placeholder="Search customer, vehicle or transaction ID">
+
+        <select id="paymentStatusFilter">
+          <option value="">All Statuses</option>
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+          <option value="Failed">Failed</option>
+        </select>
+      </div>
+
+      <div class="payment-table-wrap">
+        <table class="payment-table">
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Customer</th>
+              <th>Vehicle</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="paymentHistoryBody">
+            <tr>
+              <td colspan="7">No payments recorded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span id="paymentPageInfo" class="muted small"></span>
+        <div class="page-buttons" id="paymentPagination"></div>
+      </div>
+    </section>
+
+    <footer>© 2026 Popoye Insurance · Admin Portal</footer>
+
+  </main>
+</div>
+
+<script src="payment.js"></script>
+</body>
+</html>

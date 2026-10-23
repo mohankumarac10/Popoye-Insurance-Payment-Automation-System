@@ -25,9 +25,15 @@
       <a class="nav-link" href="reports.html">Reports</a>
       <a class="nav-link active" href="settings.html">Settings</a>
     </nav>
+
+    <div class="sidebar-bottom">
+      Two-wheeler Insurance
+      <small>Management Portal</small>
+    </div>
   </aside>
 
   <main class="main">
+
     <header class="topbar">
       <div>
         <h1>Settings</h1>
@@ -35,18 +41,21 @@
       </div>
     </header>
 
+    <!-- Business Information -->
     <section class="panel">
       <h3>Business Information</h3>
       <p>Update your business contact details.</p>
 
       <form id="businessSettingsForm">
         <div class="form-grid">
+
           <div class="field">
             <label for="businessName">Business Name</label>
             <input
               type="text"
               id="businessName"
               name="businessName"
+              placeholder="Popoye Insurance"
               required
             >
           </div>
@@ -57,6 +66,7 @@
               type="email"
               id="businessEmail"
               name="businessEmail"
+              placeholder="business@example.com"
             >
           </div>
 
@@ -66,6 +76,7 @@
               type="tel"
               id="businessPhone"
               name="businessPhone"
+              placeholder="Enter contact number"
             >
           </div>
 
@@ -75,20 +86,28 @@
               type="text"
               id="businessAddress"
               name="businessAddress"
+              placeholder="Enter business address"
             >
           </div>
+
         </div>
 
-        <button class="btn" type="submit">Save Business Details</button>
+        <button class="btn" type="submit">
+          Save Business Details
+        </button>
+
+        <p id="businessMessage" role="status" aria-live="polite"></p>
       </form>
     </section>
 
+    <!-- Renewal Reminder Preferences -->
     <section class="panel">
       <h3>Renewal Reminder Preferences</h3>
-      <p>Choose how the prototype should display reminder preferences.</p>
+      <p>Configure the reminder preferences used by this prototype.</p>
 
       <form id="reminderSettingsForm">
         <div class="form-grid">
+
           <div class="field">
             <label for="reminderDays">Remind Before Expiry</label>
             <select id="reminderDays" name="reminderDays">
@@ -107,37 +126,73 @@
               <option value="Both">WhatsApp and SMS</option>
             </select>
           </div>
+
         </div>
 
-        <label>
-          <input type="checkbox" id="enableReminders">
-          Enable renewal reminders
-        </label>
+        <div class="field">
+          <label>
+            <input type="checkbox" id="enableReminders" name="enableReminders">
+            Enable renewal reminders
+          </label>
+        </div>
 
-        <br><br>
+        <button class="btn" type="submit">
+          Save Reminder Preferences
+        </button>
 
-        <button class="btn" type="submit">Save Reminder Preferences</button>
+        <p id="reminderMessage" role="status" aria-live="polite"></p>
       </form>
     </section>
 
+    <!-- Display Settings -->
     <section class="panel">
-      <h3>Display Preferences</h3>
-      <p>Choose your preferred dashboard appearance.</p>
+      <h3>Display Settings</h3>
+      <p>Customize how information appears in the management portal.</p>
 
       <form id="displaySettingsForm">
-        <div class="field">
-          <label for="themePreference">Website Theme</label>
-          <select id="themePreference" name="themePreference">
-            <option value="light">Light Mode</option>
-            <option value="dark">Dark Mode</option>
-          </select>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="themeMode">Theme</label>
+            <select id="themeMode" name="themeMode">
+              <option value="light">Light Mode</option>
+              <option value="dark">Dark Mode</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dateFormat">Date Format</label>
+            <select id="dateFormat" name="dateFormat">
+              <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+              <option value="MM-DD-YYYY">MM-DD-YYYY</option>
+              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="rowsPerPage">Rows Per Page</label>
+            <select id="rowsPerPage" name="rowsPerPage">
+              <option value="5">5 rows</option>
+              <option value="10">10 rows</option>
+              <option value="15">15 rows</option>
+              <option value="20">20 rows</option>
+            </select>
+          </div>
+
         </div>
 
-        <br>
+        <button class="btn" type="submit">
+          Save Display Settings
+        </button>
 
-        <button class="btn" type="submit">Save Display Settings</button>
+        <p id="displayMessage" role="status" aria-live="polite"></p>
       </form>
     </section>
+
+    <footer class="settings-footer">
+      <p>Popoye Insurance · Two-wheeler Insurance Management Portal</p>
+    </footer>
+
   </main>
 
   <script src="settings.js"></script>

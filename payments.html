@@ -6,8 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payments | Popoye Insurance</title>
   <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
+<div class="app">
 
   <aside class="sidebar">
     <div class="brand">
@@ -25,16 +28,23 @@
       <a class="nav-link" href="reports.html">Reports</a>
       <a class="nav-link" href="settings.html">Settings</a>
     </nav>
+
+    <div class="sidebar-bottom">
+      Two-wheeler Insurance
+      <small>Management Portal</small>
+    </div>
   </aside>
 
   <main class="main">
+
     <header class="topbar">
       <div>
         <h1>Payments</h1>
-        <p>Track insurance renewal payments.</p>
+        <p>Manage two-wheeler insurance renewal payments.</p>
       </div>
     </header>
 
+    <!-- PAYMENT STATISTICS -->
     <section class="stats">
       <div class="stat">
         <span>Total Payments</span>
@@ -54,13 +64,112 @@
       </div>
     </section>
 
+    <!-- MAKE PAYMENT SECTION -->
+    <section class="payment-grid">
+
+      <div class="payment-box">
+        <h2>Make a Payment</h2>
+        <p>Select a customer and payment method.</p>
+
+        <form id="makePaymentForm" class="payment-form">
+
+          <div class="field">
+            <label for="payCustomer">Customer</label>
+            <select id="payCustomer" required>
+              <option value="">Select customer</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="payVehicle">Vehicle Number</label>
+            <input id="payVehicle" type="text" readonly
+                   placeholder="Selected customer's vehicle">
+          </div>
+
+          <div class="field">
+            <label for="payAmount">Premium Amount (₹)</label>
+            <input id="payAmount" type="number" min="1" step="0.01"
+                   required placeholder="Enter premium amount">
+          </div>
+
+          <div class="field">
+            <label>Choose Payment Method</label>
+
+            <div class="method-options">
+              <label class="method-option">
+                <input type="radio" name="payMethod"
+                       value="UPI" checked>
+                UPI
+              </label>
+
+              <label class="method-option">
+                <input type="radio" name="payMethod"
+                       value="Card">
+                Debit / Credit Card
+              </label>
+
+              <label class="method-option">
+                <input type="radio" name="payMethod"
+                       value="Net Banking">
+                Net Banking
+              </label>
+            </div>
+          </div>
+
+          <div class="payment-note">
+            Demo mode: submitting this form records a simulated payment.
+            It does not transfer money or confirm a real insurance payment.
+          </div>
+
+          <button class="btn btn-primary" type="submit">
+            Record Demo Payment
+          </button>
+
+          <p id="makePaymentMessage" class="payment-message"
+             role="status"></p>
+        </form>
+      </div>
+
+      <div class="payment-box">
+        <h2>Payment Summary</h2>
+        <p>Review the selected payment details.</p>
+
+        <div class="payment-total" id="paySummaryAmount">₹0</div>
+
+        <p><strong>Customer:</strong>
+          <span id="paySummaryCustomer">Not selected</span>
+        </p>
+
+        <p><strong>Vehicle:</strong>
+          <span id="paySummaryVehicle">-</span>
+        </p>
+
+        <p><strong>Method:</strong>
+          <span id="paySummaryMethod">UPI</span>
+        </p>
+
+        <p><strong>Status:</strong> Pending until recorded</p>
+
+        <div class="payment-note">
+          Real online payments require a payment gateway and secure
+          server-side verification before a payment can be marked successful.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PAYMENT HISTORY -->
     <section class="panel">
+      <div class="panel-head">
+        <h2>Payment History</h2>
+        <button class="btn" id="exportPayments" type="button">
+          Export CSV
+        </button>
+      </div>
+
       <div class="toolbar">
-        <input
-          type="search"
-          id="paymentSearch"
-          placeholder="Search payment, customer or vehicle..."
-        >
+        <input type="search" id="paymentSearch"
+               placeholder="Search payment, customer or vehicle...">
 
         <select id="paymentStatusFilter">
           <option value="">All Payment Statuses</option>
@@ -110,9 +219,12 @@
         </div>
       </div>
     </section>
+
+    <footer>© 2026 Popoye Insurance · Admin Portal</footer>
+
   </main>
+</div>
 
-
-  <script src="payments.js"></script>
+<script src="payments.js"></script>
 </body>
 </html>

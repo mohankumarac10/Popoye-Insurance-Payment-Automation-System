@@ -1,266 +1,402 @@
 
-const reminderStorageKey = "popoyeReminders";
+document.addEventListener("DOMContentLoaded", () => {
+    const CUSTOMER_KEY = "popoyeCustomers";
+    const REMINDER_KEY = "popoyeReminders";
+    const ITEMS_PER_PAGE = 5;
 
-const defaultReminders = [
-  {
-    id: "REM1001",
-    customer: "Arun Kumar",
-    vehicle: "TN 38 AB 1234",
-    expiry: "2026-11-15",
-    channel: "WhatsApp",
-    status: "Upcoming"
-  },
-  {
-    id: "REM1002",
-    customer: "Priya S",
-    vehicle: "TN 37 CD 5678",
-    expiry: "2026-10-28",
-    channel: "WhatsApp",
-    status: "Upcoming"
-  },
-  {
-    id: "REM1003",
-    customer: "Karthik R",
-    vehicle: "TN 66 EF 9012",
-    expiry: "2026-11-05",
-    channel: "SMS",
-    status: "Sent"
-  },
-  {
-    id: "REM1004",
-    customer: "Divya M",
-    vehicle: "TN 39 GH 3456",
-    expiry: "2026-10-10",
-    channel: "WhatsApp",
-    status: "Overdue"
-  },
-  {
-    id: "REM1005",
-    customer: "Vijay P",
-    vehicle: "TN 40 JK 7890",
-    expiry: "2026-11-20",
-    channel: "SMS",
-    status: "Upcoming"
-  },
-  {
-    id: "REM1006",
-    customer: "Meena K",
-    vehicle: "TN 41 LM 2345",
-    expiry: "2026-10-18",
-    channel: "WhatsApp",
-    status: "Sent"
-  },
-  {
-    id: "REM1007",
-    customer: "Suresh B",
-    vehicle: "TN 42 NP 6789",
-    expiry: "2026-10-12",
-    channel: "SMS",
-    status: "Overdue"
-  },
-  {
-    id: "REM1008",
-    customer: "Nisha R",
-    vehicle: "TN 43 QR 1122",
-    expiry: "2026-12-05",
-    channel: "WhatsApp",
-    status: "Upcoming"
-  }
-];
+    // Dashboard elements
+    const totalReminders = document.getElementById("totalReminders");
+    const upcomingReminders = document.getElementById("upcomingReminders");
+    const sentReminders = document.getElementById("sentReminders");
+    const overdueReminders = document.getElementById("overdueReminders");
 
-function loadReminders() {
-  try {
-    const saved = localStorage.getItem(reminderStorageKey);
-    if (saved !== null) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) return parsed;
+    // Table, filters and pagination
+    const remindersTable = document.getElementById("remindersTable");
+    const reminderSearch = document.getElementById("reminderSearch");
+    const reminderStatusFilter = document.getElementById("reminderStatusFilter");
+    const resetReminderFilters = document.getElementById("resetReminderFilters");
+    const reminderPageInfo = document.getElementById("reminderPageInfo");
+    const previousReminderPage = document.getElementById("previousReminderPage");
+    const nextReminderPage = document.getElementById("nextReminderPage");
+
+    let currentPage = 1;
+
+    function readStorage(key) {
+        try {
+            const data = JSON.parse(localStorage.getItem(key) || "[]");
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error("Unable to read local storage:", error);
+            return [];
+        }
     }
-  } catch (error) {
-    console.error("Unable to load reminders:", error);
-  }
 
-  return defaultReminders.map(reminder => ({ ...reminder }));
-}
+    function saveReminders(reminders) {
+        localStorage.setItem(REMINDER_KEY, JSON.stringify(reminders));
+    }
 
-let reminders = loadReminders();
-const reminderPageSize = 5;
-let reminderCurrentPage = 1;
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[character]);
+    }
 
-const reminderSearch = document.getElementById("reminderSearch");
-const reminderStatusFilter = document.getElementById("reminderStatusFilter");
-const remindersTable = document.getElementById("remindersTable");
+    function getCustomerName(customer) {
+        return customer.name || customer.customerName || "Unknown Customer";
+    }
 
-function saveReminders() {
-  try {
-    localStorage.setItem(reminderStorageKey, JSON.stringify(reminders));
-  } catch (error) {
-    alert("Could not save changes in this browser.");
-  }
-}
+    function getToday() {
+        const date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return date;
+    }
 
-function escapeReminderText(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[character]);
-}
+    function getExpiryDate(dateString) {
+        if (!dateString) return null;
 
-function formatReminderDate(dateString) {
-  return new Date(dateString + "T00:00:00").toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
-}
+        const date = new Date(`${dateString}T00:00:00`);
 
-function updateReminderStats() {
-  document.getElementById("totalReminders").textContent = reminders.length;
+        return Number.isNaN(date.getTime()) ? null : date;
+    }
 
-  document.getElementById("upcomingReminders").textContent =
-    reminders.filter(r => r.status === "Upcoming").length;
+    function getAutomaticStatus(expiryDate) {
+        const expiry = getExpiryDate(expiryDate);
 
-  document.getElementById("sentReminders").textContent =
-    reminders.filter(r => r.status === "Sent").length;
+        if (!expiry) return "Upcoming";
 
-  document.getElementById("overdueReminders").textContent =
-    reminders.filter(r => r.status === "Overdue").length;
-}
+        if (expiry < getToday()) return "Overdue";
 
-function getFilteredReminders() {
-  const searchTerm = reminderSearch.value.trim().toLowerCase();
-  const selectedStatus = reminderStatusFilter.value;
+        return "Upcoming";
+    }
 
-  return reminders.filter(reminder => {
-    const matchesSearch = [
-      reminder.id,
-      reminder.customer,
-      reminder.vehicle,
-      reminder.channel
-    ].some(value => value.toLowerCase().includes(searchTerm));
+    function getReminderStatus(reminder) {
+        // Preserve manually marked sent reminders.
+        if (reminder.status === "Sent") {
+            return "Sent";
+        }
 
-    const matchesStatus =
-      !selectedStatus || reminder.status === selectedStatus;
+        return getAutomaticStatus(reminder.expiryDate);
+    }
 
-    return matchesSearch && matchesStatus;
-  });
-}
+    function formatDate(dateString) {
+        const date = getExpiryDate(dateString);
 
-function renderReminders() {
-  const filteredReminders = getFilteredReminders();
+        if (!date) return "Not provided";
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredReminders.length / reminderPageSize)
-  );
+        return date.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
 
-  if (reminderCurrentPage > totalPages) {
-    reminderCurrentPage = totalPages;
-  }
+    // Generate reminders from the saved customer records.
+    function syncReminders() {
+        const customers = readStorage(CUSTOMER_KEY);
+        const existingReminders = readStorage(REMINDER_KEY);
 
-  const startIndex = (reminderCurrentPage - 1) * reminderPageSize;
-  const visibleReminders = filteredReminders.slice(
-    startIndex,
-    startIndex + reminderPageSize
-  );
+        const reminders = customers
+            .filter(customer => customer.expiryDate)
+            .map((customer, index) => {
+                const customerId = String(customer.id ?? index);
+                const expiryDate = customer.expiryDate;
 
-  if (visibleReminders.length === 0) {
-    remindersTable.innerHTML = `
-      <tr>
-        <td colspan="7">No reminders found.</td>
-      </tr>
-    `;
-  } else {
-    remindersTable.innerHTML = visibleReminders.map(reminder => {
-      let statusClass = "pending";
+                // Keep the same reminder when the customer and expiry date match.
+                const existing = existingReminders.find(reminder =>
+                    String(reminder.customerId) === customerId &&
+                    reminder.expiryDate === expiryDate
+                );
 
-      if (reminder.status === "Sent") statusClass = "paid";
-      if (reminder.status === "Overdue") statusClass = "failed";
+                return {
+                    id: existing?.id || `REM-${customerId}-${expiryDate}`,
+                    customerId,
+                    customerName: getCustomerName(customer),
+                    phone: customer.phone || customer.customerPhone || "",
+                    vehicleNumber: customer.vehicleNumber || "",
+                    expiryDate,
+                    channel: existing?.channel || "WhatsApp",
+                    status: existing?.status === "Sent"
+                        ? "Sent"
+                        : getAutomaticStatus(expiryDate),
+                    sentAt: existing?.sentAt || null
+                };
+            });
 
-      const actionButton = reminder.status === "Sent"
-        ? `<button class="btn" disabled>Sent</button>`
-        : `<button class="btn mark-reminder-sent"
-             data-id="${escapeReminderText(reminder.id)}"
-             type="button">Mark as Sent</button>`;
+        saveReminders(reminders);
+        return reminders;
+    }
 
-      return `
-        <tr>
-          <td>${escapeReminderText(reminder.id)}</td>
-          <td>${escapeReminderText(reminder.customer)}</td>
-          <td>${escapeReminderText(reminder.vehicle)}</td>
-          <td>${formatReminderDate(reminder.expiry)}</td>
-          <td>${escapeReminderText(reminder.channel)}</td>
-          <td>
-            <span class="status ${statusClass}">
-              ${escapeReminderText(reminder.status)}
-            </span>
-          </td>
-          <td>${actionButton}</td>
-        </tr>
-      `;
-    }).join("");
-  }
+    function renderStats(reminders) {
+        totalReminders.textContent = reminders.length;
 
-  document.getElementById("reminderPageInfo").textContent =
-    `Page ${reminderCurrentPage} of ${totalPages} · ${filteredReminders.length} reminders`;
+        upcomingReminders.textContent = reminders.filter(
+            reminder => getReminderStatus(reminder) === "Upcoming"
+        ).length;
 
-  document.getElementById("previousReminderPage").disabled =
-    reminderCurrentPage === 1;
+        sentReminders.textContent = reminders.filter(
+            reminder => getReminderStatus(reminder) === "Sent"
+        ).length;
 
-  document.getElementById("nextReminderPage").disabled =
-    reminderCurrentPage === totalPages;
-}
+        overdueReminders.textContent = reminders.filter(
+            reminder => getReminderStatus(reminder) === "Overdue"
+        ).length;
+    }
 
-remindersTable.addEventListener("click", event => {
-  const button = event.target.closest(".mark-reminder-sent");
-  if (!button) return;
+    function getFilteredReminders() {
+        const searchTerm = (reminderSearch.value || "").trim().toLowerCase();
+        const selectedStatus = reminderStatusFilter.value;
 
-  const reminder = reminders.find(item => item.id === button.dataset.id);
-  if (!reminder) return;
+        return syncReminders().filter(reminder => {
+            const status = getReminderStatus(reminder);
 
-  reminder.status = "Sent";
-  saveReminders();
-  updateReminderStats();
-  renderReminders();
-});
+            const searchableText = [
+                reminder.id,
+                reminder.customerName,
+                reminder.vehicleNumber,
+                reminder.phone,
+                reminder.channel
+            ].join(" ").toLowerCase();
 
-reminderSearch.addEventListener("input", () => {
-  reminderCurrentPage = 1;
-  renderReminders();
-});
+            return searchableText.includes(searchTerm) &&
+                (!selectedStatus || status === selectedStatus);
+        });
+    }
 
-reminderStatusFilter.addEventListener("change", () => {
-  reminderCurrentPage = 1;
-  renderReminders();
-});
+    function renderReminders() {
+        const allReminders = syncReminders();
 
-document.getElementById("resetReminderFilters").addEventListener("click", () => {
-  reminderSearch.value = "";
-  reminderStatusFilter.value = "";
-  reminderCurrentPage = 1;
-  renderReminders();
-});
+        renderStats(allReminders);
 
-document.getElementById("previousReminderPage").addEventListener("click", () => {
-  if (reminderCurrentPage > 1) {
-    reminderCurrentPage--;
+        const filteredReminders = getFilteredReminders();
+        const totalPages = Math.max(
+            1,
+            Math.ceil(filteredReminders.length / ITEMS_PER_PAGE)
+        );
+
+        currentPage = Math.min(currentPage, totalPages);
+
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const pageItems = filteredReminders.slice(
+            startIndex,
+            startIndex + ITEMS_PER_PAGE
+        );
+
+        if (pageItems.length === 0) {
+            remindersTable.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center;padding:24px;">
+                        No reminders found. Add customers with expiry dates first.
+                    </td>
+                </tr>`;
+        } else {
+            remindersTable.innerHTML = pageItems.map(reminder => {
+                const status = getReminderStatus(reminder);
+                const statusClass = status.toLowerCase();
+
+                return `
+                    <tr>
+                        <td>${escapeHTML(reminder.id)}</td>
+                        <td>${escapeHTML(reminder.customerName)}</td>
+                        <td>${escapeHTML(reminder.vehicleNumber)}</td>
+                        <td>${escapeHTML(formatDate(reminder.expiryDate))}</td>
+                        <td>
+                            <select
+                                class="reminder-channel"
+                                data-id="${escapeHTML(reminder.id)}"
+                                aria-label="Reminder channel"
+                            >
+                                <option value="WhatsApp"
+                                    ${reminder.channel === "WhatsApp" ? "selected" : ""}>
+                                    WhatsApp
+                                </option>
+                                <option value="SMS"
+                                    ${reminder.channel === "SMS" ? "selected" : ""}>
+                                    SMS
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <span class="status ${statusClass}">
+                                ${escapeHTML(status)}
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn send-reminder-btn"
+                                data-id="${escapeHTML(reminder.id)}"
+                            >
+                                ${status === "Sent" ? "Send Again" : "Send Reminder"}
+                            </button>
+                        </td>
+                    </tr>`;
+            }).join("");
+        }
+
+        reminderPageInfo.textContent =
+            `Page ${currentPage} of ${totalPages} • ${filteredReminders.length} reminders`;
+
+        previousReminderPage.disabled = currentPage <= 1;
+        nextReminderPage.disabled = currentPage >= totalPages;
+    }
+
+    function saveReminderChannel(reminderId, channel) {
+        const reminders = readStorage(REMINDER_KEY);
+        const reminder = reminders.find(item => item.id === reminderId);
+
+        if (!reminder) return;
+
+        reminder.channel = channel;
+        saveReminders(reminders);
+    }
+
+    function getPhoneNumber(phone) {
+        // Accept numbers stored as 10-digit Indian mobile numbers or +91 numbers.
+        let number = String(phone || "").replace(/\D/g, "");
+
+        if (number.length === 10) {
+            number = "91" + number;
+        } else if (number.startsWith("0") && number.length === 11) {
+            number = "91" + number.slice(1);
+        }
+
+        return number;
+    }
+
+    function buildMessage(reminder) {
+        return `Hello ${reminder.customerName},
+
+This is a renewal reminder from Popoye Insurance.
+
+Vehicle Number: ${reminder.vehicleNumber}
+Insurance Expiry Date: ${formatDate(reminder.expiryDate)}
+
+Please contact Popoye Insurance to renew your two-wheeler insurance.
+
+Thank you,
+Popoye Insurance`;
+    }
+
+    function openReminder(reminder) {
+        const phone = getPhoneNumber(reminder.phone);
+
+        if (!phone || phone.length < 10 || phone.length > 15) {
+            alert(
+                "This customer does not have a valid phone number. " +
+                "Please update the phone number on the Customers page."
+            );
+            return;
+        }
+
+        const message = buildMessage(reminder);
+        let messageUrl;
+
+        if (reminder.channel === "WhatsApp") {
+            messageUrl =
+                `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            // Opens WhatsApp with the message prepared.
+            // The user must press Send in WhatsApp.
+            window.open(messageUrl, "_blank", "noopener,noreferrer");
+        } else {
+            // Opens a compatible SMS app where supported.
+            messageUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
+            window.location.href = messageUrl;
+        }
+
+        // Do not claim that a message was sent automatically.
+        const markSent = window.confirm(
+            `${reminder.channel} has been opened with a prepared message.\n\n` +
+            "Did you actually send the message? Choose OK only after sending it."
+        );
+
+        if (markSent) {
+            const reminders = readStorage(REMINDER_KEY);
+            const selected = reminders.find(item => item.id === reminder.id);
+
+            if (selected) {
+                selected.status = "Sent";
+                selected.sentAt = new Date().toISOString();
+                saveReminders(reminders);
+            }
+
+            renderReminders();
+            alert(
+                "Reminder marked as Sent in this demo. " +
+                "Delivery has not been verified by the website."
+            );
+        }
+    }
+
+    // Change WhatsApp/SMS channel for an individual reminder.
+    remindersTable.addEventListener("change", event => {
+        const select = event.target.closest(".reminder-channel");
+        if (!select) return;
+
+        saveReminderChannel(select.dataset.id, select.value);
+        renderReminders();
+    });
+
+    // Send the selected reminder.
+    remindersTable.addEventListener("click", event => {
+        const button = event.target.closest(".send-reminder-btn");
+        if (!button) return;
+
+        const reminder = readStorage(REMINDER_KEY).find(
+            item => item.id === button.dataset.id
+        );
+
+        if (!reminder) {
+            alert("Reminder not found. Please refresh the page.");
+            return;
+        }
+
+        openReminder(reminder);
+    });
+
+    // Search and filter.
+    reminderSearch.addEventListener("input", () => {
+        currentPage = 1;
+        renderReminders();
+    });
+
+    reminderStatusFilter.addEventListener("change", () => {
+        currentPage = 1;
+        renderReminders();
+    });
+
+    resetReminderFilters.addEventListener("click", () => {
+        reminderSearch.value = "";
+        reminderStatusFilter.value = "";
+        currentPage = 1;
+        renderReminders();
+    });
+
+    // Pagination.
+    previousReminderPage.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderReminders();
+        }
+    });
+
+    nextReminderPage.addEventListener("click", () => {
+        const totalPages = Math.max(
+            1,
+            Math.ceil(getFilteredReminders().length / ITEMS_PER_PAGE)
+        );
+
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderReminders();
+        }
+    });
+
+    // Initial load.
+    syncReminders();
     renderReminders();
-  }
 });
-
-document.getElementById("nextReminderPage").addEventListener("click", () => {
-  const totalPages = Math.max(
-    1,
-    Math.ceil(getFilteredReminders().length / reminderPageSize)
-  );
-
-  if (reminderCurrentPage < totalPages) {
-    reminderCurrentPage++;
-    renderReminders();
-  }
-});
-
-updateReminderStats();
-renderReminders();

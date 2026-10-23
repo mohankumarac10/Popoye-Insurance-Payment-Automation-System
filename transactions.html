@@ -2,119 +2,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transactions | Popoye Insurance</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions | Popoye Insurance</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <img src="images/logo.png" alt="Popoye Insurance Logo">
-      <span>Popoye Insurance</span>
-    </div>
-
-    <nav>
-      <a class="nav-link" href="index.html">Dashboard</a>
-      <a class="nav-link" href="customers.html">Customers</a>
-      <a class="nav-link" href="policies.html">Policies</a>
-      <a class="nav-link" href="payments.html">Payments</a>
-      <a class="nav-link active" href="transactions.html">Transactions</a>
-      <a class="nav-link" href="reminders.html">Reminders</a>
-      <a class="nav-link" href="reports.html">Reports</a>
-      <a class="nav-link" href="settings.html">Settings</a>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div>
-        <h1>Transactions</h1>
-        <p>Monitor insurance payment transaction records.</p>
-      </div>
-    </header>
-
-    <section class="stats">
-      <div class="stat">
-        <span>Total Transactions</span>
-        <h2 id="totalTransactions">0</h2>
-      </div>
-
-      <div class="stat">
-        <span>Successful</span>
-        <h2 id="successfulTransactions">0</h2>
-      </div>
-
-      <div class="stat">
-        <span>Pending</span>
-        <h2 id="pendingTransactions">0</h2>
-      </div>
-
-      <div class="stat">
-        <span>Failed</span>
-        <h2 id="failedTransactions">0</h2>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="toolbar">
-        <input
-          type="search"
-          id="transactionSearch"
-          placeholder="Search transaction, payment ID or customer..."
-        >
-
-        <select id="transactionStatusFilter">
-          <option value="">All Statuses</option>
-          <option value="Successful">Successful</option>
-          <option value="Pending">Pending</option>
-          <option value="Failed">Failed</option>
-        </select>
-
-        <select id="transactionMethodFilter">
-          <option value="">All Payment Methods</option>
-          <option value="UPI">UPI</option>
-          <option value="Card">Card</option>
-          <option value="Net Banking">Net Banking</option>
-        </select>
-
-        <button class="btn" id="resetTransactionFilters" type="button">
-          Reset Filters
-        </button>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Payment ID</th>
-              <th>Customer</th>
-              <th>Amount</th>
-              <th>Method</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="transactionsTable"></tbody>
-        </table>
-      </div>
-
-      <div class="pagination">
-        <span id="transactionPageInfo">Page 1</span>
-        <div>
-          <button class="btn" id="previousTransactionPage" type="button">
-            Previous
-          </button>
-          <button class="btn" id="nextTransactionPage" type="button">
-            Next
-          </button>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="images/logo.png" alt="Popoye Insurance Logo">
+            <span>Popoye Insurance</span>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <script src="transactions.js"></script>
+        <nav>
+            <a class="nav-link" href="index.html">Dashboard</a>
+            <a class="nav-link" href="customers.html">Customers</a>
+            <a class="nav-link" href="policies.html">Policies</a>
+            <a class="nav-link" href="payments.html">Payments</a>
+            <a class="nav-link active" href="transactions.html">Transactions</a>
+            <a class="nav-link" href="reminders.html">Reminders</a>
+            <a class="nav-link" href="reports.html">Reports</a>
+            <a class="nav-link" href="settings.html">Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            Two-wheeler Insurance
+            <small>Management Portal</small>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Transactions</h1>
+                <p>Monitor and review insurance payment transaction records.</p>
+            </div>
+
+            <button class="btn btn-primary" id="exportTransactions" type="button">
+                Export CSV
+            </button>
+        </header>
+
+        <!-- Transaction Statistics -->
+        <section class="stats">
+            <div class="stat">
+                <span>Total Transactions</span>
+                <h2 id="totalTransactions">0</h2>
+            </div>
+
+            <div class="stat">
+                <span>Successful</span>
+                <h2 id="successfulTransactions">0</h2>
+            </div>
+
+            <div class="stat">
+                <span>Pending</span>
+                <h2 id="pendingTransactions">0</h2>
+            </div>
+
+            <div class="stat">
+                <span>Failed</span>
+                <h2 id="failedTransactions">0</h2>
+            </div>
+        </section>
+
+        <!-- Transaction Amount Summary -->
+        <section class="panel">
+            <h2>Transaction Overview</h2>
+
+            <div class="stats">
+                <div class="stat">
+                    <span>Total Recorded Amount</span>
+                    <h2 id="totalTransactionAmount">₹0</h2>
+                </div>
+
+                <div class="stat">
+                    <span>Successful Amount</span>
+                    <h2 id="successfulTransactionAmount">₹0</h2>
+                </div>
+
+                <div class="stat">
+                    <span>Pending Amount</span>
+                    <h2 id="pendingTransactionAmount">₹0</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filters -->
+        <section class="panel">
+
+            <div class="toolbar">
+                <input
+                    type="search"
+                    id="transactionSearch"
+                    placeholder="Search transaction ID, payment ID or customer..."
+                    aria-label="Search transactions"
+                >
+
+                <select id="transactionStatusFilter" aria-label="Filter by status">
+                    <option value="">All Statuses</option>
+                    <option value="Successful">Successful</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Failed">Failed</option>
+                </select>
+
+                <select id="transactionMethodFilter" aria-label="Filter by payment method">
+                    <option value="">All Payment Methods</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                    <option value="Net Banking">Net Banking</option>
+                </select>
+
+                <button class="btn" id="resetTransactionFilters" type="button">
+                    Reset Filters
+                </button>
+            </div>
+
+            <!-- Transaction Table -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Payment ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="transactionsTable">
+                        <tr>
+                            <td colspan="7" style="text-align:center;padding:24px;">
+                                Loading transactions...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <span id="transactionPageInfo">Page 1</span>
+
+                <div>
+                    <button
+                        class="btn"
+                        id="previousTransactionPage"
+                        type="button"
+                        disabled
+                    >
+                        Previous
+                    </button>
+
+                    <button
+                        class="btn"
+                        id="nextTransactionPage"
+                        type="button"
+                        disabled
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <p style="color:var(--muted);font-size:13px;margin-top:16px;">
+            Demo transactions are stored in this browser. Only payment records
+            verified by your payment gateway should be treated as real transactions.
+        </p>
+
+    </main>
+
+    <script src="transactions.js"></script>
 </body>
 </html>

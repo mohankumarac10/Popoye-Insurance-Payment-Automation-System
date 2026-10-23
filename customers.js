@@ -1,200 +1,395 @@
 
-const storageKey = "popoyeCustomers";
+/* ==========================================
+   POPOYE INSURANCE - CUSTOMER MANAGEMENT
+   ========================================== */
 
-const sampleCustomers = [
-  {id:"CUS1001",name:"Arun Kumar",phone:"9876543210",vehicle:"TN38AB1234",policy:"Comprehensive",premium:4200,expiry:"2026-11-10",status:"Active"},
-  {id:"CUS1002",name:"Priya S",phone:"9876543211",vehicle:"TN37CD2345",policy:"Third Party",premium:1800,expiry:"2026-10-28",status:"Due"},
-  {id:"CUS1003",name:"Karthik R",phone:"9876543212",vehicle:"TN66EF3456",policy:"Comprehensive",premium:3900,expiry:"2026-12-15",status:"Active"},
-  {id:"CUS1004",name:"Divya M",phone:"9876543213",vehicle:"TN40GH4567",policy:"Third Party",premium:1600,expiry:"2026-10-20",status:"Expired"},
-  {id:"CUS1005",name:"Vijay S",phone:"9876543214",vehicle:"TN41JK5678",policy:"Comprehensive",premium:4500,expiry:"2026-11-22",status:"Active"},
-  {id:"CUS1006",name:"Meena P",phone:"9876543215",vehicle:"TN42LM6789",policy:"Third Party",premium:1750,expiry:"2026-11-01",status:"Due"},
-  {id:"CUS1007",name:"Suresh B",phone:"9876543216",vehicle:"TN43NP7890",policy:"Comprehensive",premium:5100,expiry:"2027-01-12",status:"Active"}
-];
+const STORAGE_KEY = "popoyeCustomers";
+const ITEMS_PER_PAGE = 5;
 
-function loadCustomers() {
-  const saved = localStorage.getItem(storageKey);
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) return parsed;
-    } catch (error) {
-      console.error("Could not load saved customers", error);
-    }
-  }
-  localStorage.setItem(storageKey, JSON.stringify(sampleCustomers));
-  return [...sampleCustomers];
-}
-
-let customers = loadCustomers();
-let filteredCustomers = [...customers];
+let customers = [];
 let currentPage = 1;
-const pageSize = 5;
 
-const $ = id => document.getElementById(id);
+// Load customers from browser storage
+function loadCustomers() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        customers = saved ? JSON.parse(saved) : [];
 
+        if (!Array.isArray(customers)) {
+            customers = [];
+        }
+    } catch (error) {
+        customers = [];
+    }
+}
+
+// Save customers
 function saveCustomers() {
-  localStorage.setItem(storageKey, JSON.stringify(customers));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
 }
 
-function getStatus(expiry) {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const date = new Date(expiry + "T00:00:00");
-  if (date < today) return "Expired";
+// Calculate status using policy expiry date
+function getStatus(customer) {
+    if (!customer.expiryDate) {
+        return customer.status || "Active";
+    }
 
-  const daysLeft = Math.ceil((date - today) / 86400000);
-  return daysLeft <= 30 ? "Due" : "Active";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const expiry = new Date(customer.expiryDate + "T00:00:00");
+    const daysLeft = Math.ceil(
+        (expiry.getTime() - today.getTime()) / 86400000
+    );
+
+    if (daysLeft < 0) return "Expired";
+    if (daysLeft <= 30) return "Due";
+
+    return "Active";
 }
 
-function updateCounts() {
-  $("totalCount").textContent = customers.length;
-  $("activeCount").textContent = customers.filter(c => getStatus(c.expiry) === "Active").length;
-  $("dueCount").textContent = customers.filter(c => getStatus(c.expiry) === "Due").length;
-  $("expiredCount").textContent = customers.filter(c => getStatus(c.expiry) === "Expired").length;
+// Update dashboard statistics
+function updateStats() {
+    const total = customers.length;
+    const active = customers.filter(c => getStatus(c) === "Active").length;
+    const due = customers.filter(c => getStatus(c) === "Due").length;
+    const expired = customers.filter(c => getStatus(c) === "Expired").length;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("activeCount").textContent = active;
+    document.getElementById("dueCount").textContent = due;
+    document.getElementById("expiredCount").textContent = expired;
 }
 
+// Render customers table
 function renderCustomers() {
-  const totalPages = Math.max(1, Math.ceil(filteredCustomers.length / pageSize));
-  currentPage = Math.min(currentPage, totalPages);
-  const start = (currentPage - 1) * pageSize;
-  const visible = filteredCustomers.slice(start, start + pageSize);
+    const tableContainer = document.getElementById("customerTable");
 
-  $("customerTable").innerHTML = visible.length ? `
-    <table>
-      <thead><tr>
-        <th>CUSTOMER ID</th><th>CUSTOMER</th><th>PHONE</th>
-        <th>VEHICLE</th><th>POLICY</th><th>PREMIUM</th>
-        <th>EXPIRY</th><th>STATUS</th>
-      </tr></thead>
-      <tbody>
-        ${visible.map(c => {
-          const status = getStatus(c.expiry);
-          return `<tr>
-            <td>${c.id}</td><td>${escapeHTML(c.name)}</td>
-            <td>${escapeHTML(c.phone)}</td><td>${escapeHTML(c.vehicle)}</td>
-            <td>${escapeHTML(c.policy)}</td>
-            <td>₹${Number(c.premium).toLocaleString("en-IN")}</td>
-            <td>${c.expiry}</td>
-            <td><span class="status ${status.toLowerCase()}">${status}</span></td>
-          </tr>`;
-        }).join("")}
-      </tbody>
-    </table>` : `<div class="empty">No customers found.</div>`;
+    const searchText = document.getElementById("searchInput")
+        .value.toLowerCase().trim();
 
-  $("pageInfo").textContent = filteredCustomers.length
-    ? `Showing ${start + 1}–${Math.min(start + pageSize, filteredCustomers.length)} of ${filteredCustomers.length}`
-    : "No records found";
+    const selectedStatus = document.getElementById("statusFilter").value;
+    const selectedPolicy = document.getElementById("policyFilter").value;
 
-  $("pagination").innerHTML = `
-    <button class="btn" id="previous" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-    <span class="muted small">Page ${currentPage} of ${totalPages}</span>
-    <button class="btn" id="next" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
-  `;
+    const filtered = customers.filter(customer => {
+        const status = getStatus(customer);
 
-  $("previous").onclick = () => {
-    if (currentPage > 1) { currentPage--; renderCustomers(); }
-  };
-  $("next").onclick = () => {
-    if (currentPage < totalPages) { currentPage++; renderCustomers(); }
-  };
+        const searchableText = [
+            customer.id,
+            customer.name,
+            customer.phone,
+            customer.vehicleNumber
+        ].join(" ").toLowerCase();
+
+        return searchableText.includes(searchText) &&
+            (!selectedStatus || status === selectedStatus) &&
+            (!selectedPolicy || customer.policyType === selectedPolicy);
+    });
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filtered.length / ITEMS_PER_PAGE)
+    );
+
+    currentPage = Math.min(currentPage, totalPages);
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageCustomers = filtered.slice(
+        startIndex,
+        startIndex + ITEMS_PER_PAGE
+    );
+
+    tableContainer.replaceChildren();
+
+    const table = document.createElement("table");
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Phone</th>
+                <th>Vehicle Number</th>
+                <th>Policy Type</th>
+                <th>Premium</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector("tbody");
+
+    if (pageCustomers.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 8;
+        cell.textContent = "No customers found.";
+        cell.style.textAlign = "center";
+        cell.style.padding = "24px";
+
+        row.appendChild(cell);
+        tbody.appendChild(row);
+    } else {
+        pageCustomers.forEach(customer => {
+            const row = document.createElement("tr");
+            const status = getStatus(customer);
+
+            const values = [
+                customer.id,
+                customer.name,
+                customer.phone,
+                customer.vehicleNumber,
+                customer.policyType,
+                "₹" + Number(customer.premium || 0).toLocaleString("en-IN"),
+                customer.expiryDate || "-",
+                status
+            ];
+
+            values.forEach((value, index) => {
+                const cell = document.createElement("td");
+                cell.textContent = value || "-";
+
+                if (index === 7) {
+                    cell.classList.add(
+                        "status-" + status.toLowerCase()
+                    );
+                }
+
+                row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+        });
+    }
+
+    tableContainer.appendChild(table);
+
+    updateStats();
+    renderPagination(filtered.length, totalPages);
 }
 
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  })[char]);
+// Render pagination buttons
+function renderPagination(totalItems, totalPages) {
+    const pagination = document.getElementById("pagination");
+    const pageInfo = document.getElementById("pageInfo");
+
+    pagination.replaceChildren();
+
+    if (totalItems === 0) {
+        pageInfo.textContent = "0 customers";
+        return;
+    }
+
+    pageInfo.textContent =
+        `Showing ${(currentPage - 1) * ITEMS_PER_PAGE + 1}–` +
+        `${Math.min(currentPage * ITEMS_PER_PAGE, totalItems)} of ${totalItems}`;
+
+    function createButton(label, page, disabled = false) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.className = "btn";
+        button.disabled = disabled;
+
+        if (page === currentPage) {
+            button.classList.add("btn-primary");
+        }
+
+        button.addEventListener("click", () => {
+            currentPage = page;
+            renderCustomers();
+        });
+
+        pagination.appendChild(button);
+    }
+
+    createButton("Previous", currentPage - 1, currentPage === 1);
+
+    for (let page = 1; page <= totalPages; page++) {
+        createButton(String(page), page);
+    }
+
+    createButton("Next", currentPage + 1, currentPage === totalPages);
 }
 
-function applyFilters() {
-  const query = $("searchInput").value.trim().toLowerCase();
-  const status = $("statusFilter").value;
-  const policy = $("policyFilter").value;
+// Open Add Customer form panel
+function openCustomerForm() {
+    const panel = document.getElementById("customerFormPanel");
 
-  filteredCustomers = customers.filter(c => {
-    const matchesSearch = [c.id,c.name,c.phone,c.vehicle]
-      .some(value => String(value).toLowerCase().includes(query));
-    return matchesSearch &&
-      (!status || getStatus(c.expiry) === status) &&
-      (!policy || c.policy === policy);
-  });
+    panel.hidden = false;
+    panel.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
-  currentPage = 1;
-  renderCustomers();
+    document.getElementById("customerName").focus();
 }
 
-["searchInput","statusFilter","policyFilter"].forEach(id => {
-  $(id).addEventListener(id === "searchInput" ? "input" : "change", applyFilters);
+// Close Add Customer form panel
+function closeCustomerForm() {
+    document.getElementById("customerFormPanel").hidden = true;
+    document.getElementById("customerForm").reset();
+}
+
+// Save new customer
+function addCustomer(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    const vehicleNumber = document.getElementById("vehicleNumber")
+        .value.trim().toUpperCase();
+    const policyType = document.getElementById("policyType").value;
+    const premium = Number(document.getElementById("premium").value);
+    const expiryDate = document.getElementById("expiryDate").value;
+
+    if (!name || !phone || !vehicleNumber || !expiryDate ||
+        !Number.isFinite(premium) || premium <= 0) {
+        alert("Please complete all fields with valid information.");
+        return;
+    }
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+        alert("Enter a valid 10-digit phone number.");
+        return;
+    }
+
+    const duplicate = customers.some(customer =>
+        customer.vehicleNumber.toUpperCase() === vehicleNumber
+    );
+
+    if (duplicate) {
+        alert("This vehicle number already exists.");
+        return;
+    }
+
+    const newCustomer = {
+        id: "CUS" + Date.now(),
+        name,
+        phone,
+        vehicleNumber,
+        policyType,
+        premium,
+        expiryDate,
+        status: "Active",
+        createdAt: new Date().toISOString()
+    };
+
+    customers.unshift(newCustomer);
+
+    saveCustomers();
+
+    currentPage = 1;
+    document.getElementById("searchInput").value = "";
+    document.getElementById("statusFilter").value = "";
+    document.getElementById("policyFilter").value = "";
+
+    renderCustomers();
+    closeCustomerForm();
+
+    alert("Customer added successfully!");
+}
+
+// Reset search and filters
+function resetFilters() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("statusFilter").value = "";
+    document.getElementById("policyFilter").value = "";
+
+    currentPage = 1;
+    renderCustomers();
+}
+
+// Export customer data to CSV
+function exportCSV() {
+    if (customers.length === 0) {
+        alert("No customers available to export.");
+        return;
+    }
+
+    const headers = [
+        "Customer ID",
+        "Customer Name",
+        "Phone",
+        "Vehicle Number",
+        "Policy Type",
+        "Premium",
+        "Expiry Date",
+        "Status"
+    ];
+
+    const rows = customers.map(customer => [
+        customer.id,
+        customer.name,
+        customer.phone,
+        customer.vehicleNumber,
+        customer.policyType,
+        customer.premium,
+        customer.expiryDate,
+        getStatus(customer)
+    ]);
+
+    const escapeCSV = value =>
+        `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+    const csv = [headers, ...rows]
+        .map(row => row.map(escapeCSV).join(","))
+        .join("\r\n");
+
+    const blob = new Blob(["\uFEFF" + csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "Popoye_Insurance_Customers.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+}
+
+// Connect all buttons and initialise the page
+document.addEventListener("DOMContentLoaded", () => {
+    loadCustomers();
+
+    document.getElementById("addCustomerBtn")
+        .addEventListener("click", openCustomerForm);
+
+    document.getElementById("cancelBtn")
+        .addEventListener("click", closeCustomerForm);
+
+    document.getElementById("customerForm")
+        .addEventListener("submit", addCustomer);
+
+    document.getElementById("searchInput")
+        .addEventListener("input", () => {
+            currentPage = 1;
+            renderCustomers();
+        });
+
+    document.getElementById("statusFilter")
+        .addEventListener("change", () => {
+            currentPage = 1;
+            renderCustomers();
+        });
+
+    document.getElementById("policyFilter")
+        .addEventListener("change", () => {
+            currentPage = 1;
+            renderCustomers();
+        });
+
+    document.getElementById("resetBtn")
+        .addEventListener("click", resetFilters);
+
+    document.getElementById("exportBtn")
+        .addEventListener("click", exportCSV);
+
+    renderCustomers();
 });
-
-$("resetBtn").onclick = () => {
-  $("searchInput").value = "";
-  $("statusFilter").value = "";
-  $("policyFilter").value = "";
-  applyFilters();
-};
-
-$("exportBtn").onclick = () => {
-  const columns = ["Customer ID","Name","Phone","Vehicle","Policy","Premium INR","Expiry","Status"];
-  const rows = filteredCustomers.map(c => [
-    c.id,c.name,c.phone,c.vehicle,c.policy,c.premium,c.expiry,getStatus(c.expiry)
-  ]);
-  const csv = "\uFEFF" + [columns,...rows]
-    .map(row => row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(","))
-    .join("\r\n");
-
-  const url = URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "popoye-customers.csv";
-  link.click();
-  URL.revokeObjectURL(url);
-};
-
-$("addCustomerBtn").onclick = () => {
-  $("customerFormPanel").hidden = false;
-  $("customerFormPanel").scrollIntoView({behavior:"smooth"});
-};
-
-$("cancelBtn").onclick = () => {
-  $("customerFormPanel").hidden = true;
-  $("customerForm").reset();
-};
-
-$("customerForm").onsubmit = event => {
-  event.preventDefault();
-
-  const expiry = $("expiryDate").value;
-  const customer = {
-    id:"CUS" + Date.now(),
-    name:$("customerName").value.trim(),
-    phone:$("customerPhone").value.trim(),
-    vehicle:$("vehicleNumber").value.trim().toUpperCase(),
-    policy:$("policyType").value,
-    premium:Number($("premium").value),
-    expiry,
-    status:getStatus(expiry)
-  };
-
-  const duplicate = customers.some(c =>
-    c.vehicle.toLowerCase() === customer.vehicle.toLowerCase()
-  );
-
-  if (duplicate) {
-    alert("A customer with this vehicle number already exists.");
-    return;
-  }
-
-  customers.push(customer);
-  saveCustomers();
-  updateCounts();
-
-  $("customerForm").reset();
-  $("customerFormPanel").hidden = true;
-  applyFilters();
-
-  alert("Customer added successfully.");
-};
-
-updateCounts();
-applyFilters();

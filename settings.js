@@ -6,12 +6,17 @@ const defaultSettings = {
   businessEmail: "",
   businessPhone: "",
   businessAddress: "",
+
   reminderDays: "30",
   reminderChannel: "WhatsApp",
   enableReminders: true,
-  themePreference: "light"
+
+  themeMode: "light",
+  dateFormat: "DD-MM-YYYY",
+  rowsPerPage: "5"
 };
 
+// Load settings from localStorage.
 function loadSettings() {
   try {
     const saved = localStorage.getItem(settingsStorageKey);
@@ -31,6 +36,7 @@ function loadSettings() {
 
 let settings = loadSettings();
 
+// Get forms.
 const businessSettingsForm =
   document.getElementById("businessSettingsForm");
 
@@ -40,21 +46,34 @@ const reminderSettingsForm =
 const displaySettingsForm =
   document.getElementById("displaySettingsForm");
 
-const settingsMessage =
-  document.getElementById("settingsMessage");
+// Save all settings in one place.
+function saveSettings(messageId) {
+  const message = document.getElementById(messageId);
 
-function saveSettings() {
   try {
-    localStorage.setItem(settingsStorageKey, JSON.stringify(settings));
-    settingsMessage.textContent = "Settings saved successfully.";
+    localStorage.setItem(
+      settingsStorageKey,
+      JSON.stringify(settings)
+    );
+
+    if (message) {
+      message.textContent = "Settings saved successfully.";
+    }
+
     return true;
   } catch (error) {
-    settingsMessage.textContent =
-      "Unable to save settings. Check your browser storage.";
+    console.error("Unable to save settings:", error);
+
+    if (message) {
+      message.textContent =
+        "Unable to save settings. Check your browser storage.";
+    }
+
     return false;
   }
 }
 
+// Load saved values into the HTML forms.
 function loadSettingsIntoForms() {
   document.getElementById("businessName").value =
     settings.businessName;
@@ -77,17 +96,25 @@ function loadSettingsIntoForms() {
   document.getElementById("enableReminders").checked =
     settings.enableReminders;
 
-  document.getElementById("themePreference").value =
-    settings.themePreference;
+  document.getElementById("themeMode").value =
+    settings.themeMode;
+
+  document.getElementById("dateFormat").value =
+    settings.dateFormat;
+
+  document.getElementById("rowsPerPage").value =
+    settings.rowsPerPage;
 }
 
+// Apply the selected theme to the current page.
 function applyTheme() {
   document.body.classList.toggle(
     "dark-mode",
-    settings.themePreference === "dark"
+    settings.themeMode === "dark"
   );
 }
 
+// Save Business Information.
 businessSettingsForm.addEventListener("submit", event => {
   event.preventDefault();
 
@@ -103,9 +130,10 @@ businessSettingsForm.addEventListener("submit", event => {
   settings.businessAddress =
     document.getElementById("businessAddress").value.trim();
 
-  saveSettings();
+  saveSettings("businessMessage");
 });
 
+// Save Renewal Reminder Preferences.
 reminderSettingsForm.addEventListener("submit", event => {
   event.preventDefault();
 
@@ -118,18 +146,27 @@ reminderSettingsForm.addEventListener("submit", event => {
   settings.enableReminders =
     document.getElementById("enableReminders").checked;
 
-  saveSettings();
+  saveSettings("reminderMessage");
 });
 
+// Save Display Settings.
 displaySettingsForm.addEventListener("submit", event => {
   event.preventDefault();
 
-  settings.themePreference =
-    document.getElementById("themePreference").value;
+  settings.themeMode =
+    document.getElementById("themeMode").value;
+
+  settings.dateFormat =
+    document.getElementById("dateFormat").value;
+
+  settings.rowsPerPage =
+    document.getElementById("rowsPerPage").value;
 
   applyTheme();
-  saveSettings();
+
+  saveSettings("displayMessage");
 });
 
+// Initialize the page.
 loadSettingsIntoForms();
 applyTheme();
