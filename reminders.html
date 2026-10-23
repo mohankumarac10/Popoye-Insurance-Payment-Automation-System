@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reminders | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="policies.html">Policies</a>
+      <a href="reminders.html" class="active">Reminders</a>
+      <a href="payments.html">Payments</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="reports.html">Reports</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+
+    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Renewal Reminders</h1>
+        <p>Manage upcoming renewals and customer follow-ups.</p>
+      </div>
+      <span class="status">Reminder Center</span>
+    </header>
+
+    <section class="stats">
+      <article class="stat-card">
+        <p>Due Today</p>
+        <h2 id="reminderDueCount">0</h2>
+        <span>Reminders scheduled today</span>
+      </article>
+
+      <article class="stat-card">
+        <p>Overdue</p>
+        <h2 id="reminderOverdueCount">0</h2>
+        <span>Follow-up required</span>
+      </article>
+
+      <article class="stat-card">
+        <p>Upcoming</p>
+        <h2 id="reminderUpcomingCount">0</h2>
+        <span>Future reminders</span>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Reminder Settings</h2>
+      <p>Choose when to prepare reminders before the policy expiry date.</p>
+
+      <form id="reminderSettingsForm">
+        <label class="toggle-row">
+          <span>
+            <strong>Enable reminder workflow</strong>
+            <small>Enable the reminder workflow configuration.</small>
+          </span>
+          <input type="checkbox" id="reminderEnabled">
+        </label>
+
+        <label for="reminderFirst">
+          First reminder (days before expiry)
+          <input id="reminderFirst" type="number"
+            min="1" max="90" value="30" required>
+        </label>
+
+        <label for="reminderSecond">
+          Second reminder (days before expiry)
+          <input id="reminderSecond" type="number"
+            min="1" max="90" value="7" required>
+        </label>
+
+        <label for="reminderFinal">
+          Final reminder (days before expiry)
+          <input id="reminderFinal" type="number"
+            min="0" max="30" value="1" required>
+        </label>
+
+        <button type="submit" class="btn">Save Reminder Settings</button>
+      </form>
+
+      <p id="reminderSettingsMessage" class="notice">
+        Example schedule: 30 days, 7 days, and 1 day before expiry.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Reminder Schedule</h2>
+          <p>Search customers and review reminder dates and statuses.</p>
+        </div>
+
+        <input
+          id="reminderSearch"
+          type="search"
+          placeholder="Search customer or vehicle..."
+          aria-label="Search reminders">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Vehicle</th>
+              <th>Premium</th>
+              <th>Policy Expiry</th>
+              <th>Reminder Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="remindersTable"></tbody>
+        </table>
+      </div>
+
+      <p class="notice">
+        Demo mode: Copy reminder messages for manual use and mark them as sent.
+        This page does not automatically send WhatsApp messages.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -6,56 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customers | Popoye Insurance</title>
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
 </head>
-<body>
-  <aside class="sidebar">
-    <div class="brand"><img src="images/logo.png" alt="Logo"><span>Popoye Insurance</span></div>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a class="active" href="customers.html">Customers</a>
-      <a href="policies.html">Policies</a>
-      <a href="payments.html">Payments</a>
-      <a href="transactions.html">Transactions</a>
-      <a href="reports.html">Reports</a>
-      <a href="automation.html">Automation</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-    <div class="sidebar-footer">Two-Wheeler Insurance</div>
-  </aside>
+<body data-page="customers">
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="images/logo.png" alt="Popoye Insurance Logo"
+             onerror="this.style.display='none'">
+        <span>Popoye <small>INSURANCE</small></span>
+      </a>
+      <p class="menu-label">WORKSPACE</p>
+      <nav>
+        <a class="nav-link" href="index.html" data-nav="dashboard">▦ Dashboard</a>
+        <a class="nav-link" href="customers.html" data-nav="customers">♙ Customers</a>
+        <a class="nav-link" href="policies.html" data-nav="policies">▤ Policies</a>
+        <a class="nav-link" href="payments.html" data-nav="payments">₹ Payments</a>
+        <a class="nav-link" href="transactions.html" data-nav="transactions">⇄ Transactions</a>
+        <a class="nav-link" href="reminders.html" data-nav="reminders">◷ Reminders</a>
+        <a class="nav-link" href="reports.html" data-nav="reports">▥ Reports</a>
+        <a class="nav-link" href="settings.html" data-nav="settings">⚙ Settings</a>
+      </nav>
+      <div class="sidebar-bottom">Two-wheeler insurance<br><small>Management portal</small></div>
+    </aside>
 
-  <main class="main">
-    <header class="topbar">
-      <div><h1>Customers</h1><p>Manage your customer records.</p></div>
-      <button class="btn" onclick="showCustomerForm()">+ Add Customer</button>
-    </header>
-
-    <section class="panel" id="customerFormPanel" hidden>
-      <h2>Add Customer</h2>
-      <form id="customerForm">
-        <label>Customer Name<input name="name" required></label>
-        <label>Phone Number<input name="phone" type="tel" required></label>
-        <label>Vehicle Number<input name="vehicle" required></label>
-        <label>Premium Amount (₹)<input name="premium" type="number" min="1" required></label>
-        <label>Policy Expiry Date<input name="expiry" type="date" required></label>
-        <button class="btn" type="submit">Save Customer</button>
-        <button class="btn secondary" type="button" onclick="showCustomerForm(false)">Cancel</button>
-      </form>
-    </section>
-
-    <section class="panel">
-      <div class="section-heading">
-        <h2>Customer Directory</h2>
-        <input id="customerSearch" placeholder="Search customers...">
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Phone</th><th>Vehicle</th><th>Premium</th><th>Expiry</th></tr></thead>
-          <tbody id="customersTable"></tbody>
-        </table>
-      </div>
-    </section>
-    <p class="notice">Demo data is stored in this browser only.</p>
-  </main>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">POP OYE / WORKSPACE</span>
+          <h1 id="page-title">Customers</h1>
+        </div>
+        <div class="admin">● <span>Admin</span></div>
+      </header>
+      <section id="page-content"></section>
+      <footer>© 2026 Popoye Insurance · Admin Portal</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>
