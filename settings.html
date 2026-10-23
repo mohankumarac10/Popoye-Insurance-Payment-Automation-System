@@ -2,228 +2,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings | Popoye Insurance</title>
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="settings.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <span class="brand-icon">P</span>
-            <div>
-                <strong>Popoye Insurance</strong>
-                <small>Renewal Management</small>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="customers.html">Customers</a>
-            <a href="policies.html">Policies</a>
-            <a href="payments.html">Payments</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="reminders.html">WhatsApp Reminders</a>
-            <a href="reports.html">Reports &amp; Analytics</a>
-            <a href="settings.html" class="active">Settings</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <span class="status-dot"></span>
-            Demo Mode Active
-        </div>
-    </aside>
-
-    <main class="dashboard-main settings-main">
-
-        <header class="dashboard-header">
-            <div>
-                <p class="settings-breadcrumb">Administration / Settings</p>
-                <h1>Settings</h1>
-                <p>Manage your insurance business preferences.</p>
-            </div>
-
-            <span class="settings-admin-label">Admin Panel</span>
-        </header>
-
-        <div class="settings-notice">
-            <strong>Demo configuration</strong>
-            <p>
-                These settings are saved in this browser only.
-                They do not configure a real payment gateway or send WhatsApp messages.
-            </p>
-        </div>
-
-        <form id="settingsForm">
-
-            <section class="settings-card">
-                <div class="settings-card-heading">
-                    <div class="settings-heading-icon">🏢</div>
-                    <div>
-                        <h2>Company Information</h2>
-                        <p>Configure your business details.</p>
-                    </div>
-                </div>
-
-                <div class="settings-form-grid">
-                    <div class="form-group">
-                        <label for="companyName">Company Name</label>
-                        <input
-                            type="text"
-                            id="companyName"
-                            name="companyName"
-                            value="Popoye Insurance"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="companyEmail">Business Email</label>
-                        <input
-                            type="email"
-                            id="companyEmail"
-                            name="companyEmail"
-                            placeholder="admin@example.com"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="companyPhone">Contact Number</label>
-                        <input
-                            type="tel"
-                            id="companyPhone"
-                            name="companyPhone"
-                            placeholder="Enter business phone"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="companyAddress">Business Address</label>
-                        <input
-                            type="text"
-                            id="companyAddress"
-                            name="companyAddress"
-                            placeholder="Enter business address"
-                        >
-                    </div>
-                </div>
-            </section>
-
-            <section class="settings-card">
-                <div class="settings-card-heading">
-                    <div class="settings-heading-icon">💳</div>
-                    <div>
-                        <h2>Payment Preferences</h2>
-                        <p>Set your preferred demo payment options.</p>
-                    </div>
-                </div>
-
-                <div class="settings-form-grid">
-                    <div class="form-group">
-                        <label for="currency">Currency</label>
-                        <select id="currency" name="currency">
-                            <option value="INR">Indian Rupee (₹ INR)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="paymentMode">Payment Mode</label>
-                        <select id="paymentMode" name="paymentMode">
-                            <option value="demo">Demo Payment</option>
-                            <option value="gateway">Real Gateway (not connected)</option>
-                        </select>
-                        <small>
-                            Selecting a real gateway here does not connect one.
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="paymentExpiry">Payment Link Validity</label>
-                        <select id="paymentExpiry" name="paymentExpiry">
-                            <option value="1">1 day</option>
-                            <option value="3">3 days</option>
-                            <option value="7" selected>7 days</option>
-                            <option value="15">15 days</option>
-                        </select>
-                        <small>
-                            Preference only; existing links are not automatically expired.
-                        </small>
-                    </div>
-                </div>
-            </section>
-
-            <section class="settings-card">
-                <div class="settings-card-heading">
-                    <div class="settings-heading-icon">🔔</div>
-                    <div>
-                        <h2>Renewal Reminder Preferences</h2>
-                        <p>Configure your preferred reminder schedule.</p>
-                    </div>
-                </div>
-
-                <div class="settings-form-grid">
-                    <div class="form-group">
-                        <label for="reminderDays">Remind Before Expiry</label>
-                        <select id="reminderDays" name="reminderDays">
-                            <option value="7">7 days before</option>
-                            <option value="15">15 days before</option>
-                            <option value="30" selected>30 days before</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reminderChannel">Preferred Channel</label>
-                        <select id="reminderChannel" name="reminderChannel">
-                            <option value="whatsapp">WhatsApp (manual/demo)</option>
-                            <option value="sms">SMS (not connected)</option>
-                            <option value="email">Email (not connected)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <label class="settings-toggle-row" for="remindersEnabled">
-                    <span>
-                        <strong>Enable reminder preference</strong>
-                        <small>
-                            Saves your preference only; it does not send messages.
-                        </small>
-                    </span>
-
-                    <input
-                        type="checkbox"
-                        id="remindersEnabled"
-                        name="remindersEnabled"
-                        checked
-                    >
-                </label>
-            </section>
-
-            <div class="settings-actions">
-                <button type="button" id="resetSettingsBtn" class="btn btn-secondary">
-                    Reset Changes
-                </button>
-
-                <button type="submit" class="btn btn-primary">
-                    Save Settings
-                </button>
-            </div>
-
-            <p id="settingsMessage" class="settings-message" role="status"></p>
-
-        </form>
-
-        <footer class="dashboard-footer">
-            © 2026 Popoye Insurance. Admin Settings.
-            <span>Front-end demo version</span>
-        </footer>
-
-    </main>
-
-    <script src="js/settings.js"></script>
+  <aside class="sidebar">
+    <div class="brand"><img src="images/logo.png" alt="Logo"><span>Popoye Insurance</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a><a href="customers.html">Customers</a>
+      <a href="policies.html">Policies</a><a href="payments.html">Payments</a>
+      <a href="transactions.html">Transactions</a><a href="reports.html">Reports</a>
+      <a href="automation.html">Automation</a><a class="active" href="settings.html">Settings</a>
+    </nav>
+    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><h1>Settings</h1><p>Configure your business information.</p></div></header>
+    <section class="panel">
+      <h2>Business Profile</h2>
+      <form id="settingsForm">
+        <label>Business Name<input name="businessName" value="Popoye Insurance" required></label>
+        <label>Contact Email<input name="email" type="email" placeholder="admin@example.com"></label>
+        <label>Contact Phone<input name="phone" type="tel" placeholder="Enter business phone"></label>
+        <label>Currency
+          <select name="currency"><option value="INR">INR - Indian Rupee (₹)</option></select>
+        </label>
+        <button class="btn" type="submit">Save Settings</button>
+      </form>
+      <p id="settingsMessage" class="notice"></p>
+    </section>
+    <section class="panel">
+      <h2>Prototype Information</h2>
+      <p>Customer records and settings are stored in this browser for demonstration. This is not a production database.</p>
+    </section>
+  </main>
 </body>
 </html>

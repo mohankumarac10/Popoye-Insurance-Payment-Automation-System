@@ -2,229 +2,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers | Popoye Insurance</title>
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="customers.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
+  <aside class="sidebar">
+    <div class="brand"><img src="images/logo.png" alt="Logo"><span>Popoye Insurance</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="active" href="customers.html">Customers</a>
+      <a href="policies.html">Policies</a>
+      <a href="payments.html">Payments</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="reports.html">Reports</a>
+      <a href="automation.html">Automation</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+  </aside>
 
-<div class="app-layout">
+  <main class="main">
+    <header class="topbar">
+      <div><h1>Customers</h1><p>Manage your customer records.</p></div>
+      <button class="btn" onclick="showCustomerForm()">+ Add Customer</button>
+    </header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-icon">P</div>
-            <div>
-                <strong>Popoye Insurance</strong>
-                <small>Renewal Management</small>
-            </div>
-        </div>
+    <section class="panel" id="customerFormPanel" hidden>
+      <h2>Add Customer</h2>
+      <form id="customerForm">
+        <label>Customer Name<input name="name" required></label>
+        <label>Phone Number<input name="phone" type="tel" required></label>
+        <label>Vehicle Number<input name="vehicle" required></label>
+        <label>Premium Amount (₹)<input name="premium" type="number" min="1" required></label>
+        <label>Policy Expiry Date<input name="expiry" type="date" required></label>
+        <button class="btn" type="submit">Save Customer</button>
+        <button class="btn secondary" type="button" onclick="showCustomerForm(false)">Cancel</button>
+      </form>
+    </section>
 
-        <nav class="sidebar-nav">
-            <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="customers.html" class="active">Customers</a>
-            <a href="policies.html">Policies</a>
-            <a href="payments.html">Payments</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="reminders.html">WhatsApp Reminders</a>
-            <a href="reports.html">Reports & Analytics</a>
-            <a href="settings.html">Settings</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <small>Demo Version</small>
-            <p>Popoye Insurance</p>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="dashboard-main">
-
-        <header class="dashboard-header">
-            <div>
-                <p class="eyebrow">CUSTOMER MANAGEMENT</p>
-                <h1>Customers</h1>
-                <p>Manage two-wheeler insurance customers and renewal details.</p>
-            </div>
-
-            <button class="btn btn-primary" id="addCustomerBtn">
-                + Add Customer
-            </button>
-        </header>
-
-        <div class="dashboard-notice">
-            <strong>Demo mode:</strong>
-            Customer information is stored in this browser only.
-        </div>
-
-        <!-- Summary Cards -->
-        <section class="customer-summary">
-            <article class="customer-summary-card">
-                <span>Total Customers</span>
-                <h2 id="customerCount">0</h2>
-            </article>
-
-            <article class="customer-summary-card">
-                <span>Active Customers</span>
-                <h2 id="activeCustomerCount">0</h2>
-            </article>
-
-            <article class="customer-summary-card">
-                <span>Pending Renewals</span>
-                <h2 id="pendingCustomerCount">0</h2>
-            </article>
-        </section>
-
-        <!-- Add Customer Form -->
-        <section class="panel customer-form-panel" id="customerFormPanel" hidden>
-            <div class="panel-heading">
-                <div>
-                    <h2>Add New Customer</h2>
-                    <p>Enter the customer's details below.</p>
-                </div>
-            </div>
-
-            <form id="customerForm">
-                <div class="customer-form-grid">
-
-                    <div class="form-group">
-                        <label for="customerName">Customer Name *</label>
-                        <input
-                            type="text"
-                            id="customerName"
-                            placeholder="Enter full name"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="customerPhone">Phone Number *</label>
-                        <input
-                            type="tel"
-                            id="customerPhone"
-                            placeholder="10-digit mobile number"
-                            pattern="[0-9]{10}"
-                            maxlength="10"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="vehicleNumber">Vehicle Number *</label>
-                        <input
-                            type="text"
-                            id="vehicleNumber"
-                            placeholder="TN 38 AB 1234"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="premiumAmount">Premium Amount (₹) *</label>
-                        <input
-                            type="number"
-                            id="premiumAmount"
-                            placeholder="Enter premium"
-                            min="1"
-                            step="0.01"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="expiryDate">Policy Expiry Date *</label>
-                        <input type="date" id="expiryDate" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="policyStatus">Customer Status</label>
-                        <select id="policyStatus" required>
-                            <option value="Active">Active</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Expired">Expired</option>
-                        </select>
-                    </div>
-
-                </div>
-
-                <div class="customer-form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        Save Customer
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn"
-                        id="cancelCustomerBtn"
-                    >
-                        Cancel
-                    </button>
-                </div>
-
-                <p id="customerMessage" role="status"></p>
-            </form>
-        </section>
-
-        <!-- Customer List -->
-        <section class="panel customer-list-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Customer Records</h2>
-                    <p>Search and manage customer information.</p>
-                </div>
-            </div>
-
-            <div class="customer-toolbar">
-                <input
-                    type="search"
-                    id="customerSearch"
-                    placeholder="Search name, phone or vehicle number..."
-                    aria-label="Search customers"
-                >
-
-                <select id="statusFilter" aria-label="Filter by status">
-                    <option value="All">All Statuses</option>
-                    <option value="Active">Active</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Expired">Expired</option>
-                </select>
-            </div>
-
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Phone</th>
-                            <th>Vehicle Number</th>
-                            <th>Premium</th>
-                            <th>Expiry Date</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="customerTableBody">
-                        <tr>
-                            <td colspan="7">Loading customers...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <footer class="dashboard-footer">
-            © 2026 Popoye Insurance · Demo application
-        </footer>
-
-    </main>
-</div>
-
-<script src="js/customers.js"></script>
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Customer Directory</h2>
+        <input id="customerSearch" placeholder="Search customers...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Vehicle</th><th>Premium</th><th>Expiry</th></tr></thead>
+          <tbody id="customersTable"></tbody>
+        </table>
+      </div>
+    </section>
+    <p class="notice">Demo data is stored in this browser only.</p>
+  </main>
 </body>
 </html>

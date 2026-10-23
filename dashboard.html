@@ -2,263 +2,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Popoye Insurance</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dashboard.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+    <nav>
+      <a class="active" href="dashboard.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="policies.html">Policies</a>
+      <a href="payments.html">Payments</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="reports.html">Reports</a>
+      <a href="automation.html">Automation</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+  </aside>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <a href="index.html" class="sidebar-brand">
-            <span class="brand-icon">P</span>
-            <span>Popoye Insurance</span>
-        </a>
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back! Here's your business overview.</p>
+      </div>
+      <span class="status">Admin Panel</span>
+    </header>
 
-        <p class="sidebar-label">MAIN MENU</p>
+    <section class="stats">
+      <article class="stat-card">
+        <p>Total Customers</p>
+        <h2 id="totalCustomers">250</h2>
+        <span>Registered customers</span>
+      </article>
+      <article class="stat-card">
+        <p>Active Policies</p>
+        <h2 id="activePolicies">186</h2>
+        <span>Currently active</span>
+      </article>
+      <article class="stat-card">
+        <p>Payments Received</p>
+        <h2 id="paymentsReceived">₹1,25,000</h2>
+        <span>Demo collection total</span>
+      </article>
+      <article class="stat-card">
+        <p>Pending Renewals</p>
+        <h2 id="pendingRenewals">24</h2>
+        <span>Need follow-up</span>
+      </article>
+    </section>
 
-        <nav class="sidebar-nav">
-            <a href="index.html">⌂ <span>Home</span></a>
-            <a href="dashboard.html" class="active">▦ <span>Dashboard</span></a>
-            <a href="customers.html"> <span>Customers</span></a>
-            <a href="policies.html"> <span>Policies</span></a>
-            <a href="payments.html"> <span>Payments</span></a>
-            <a href="transactions.html"> <span>Transactions</span></a>
-            <a href="reminders.html"> <span>WhatsApp Reminders</span></a>
-            <a href="reports.html"> <span>Reports & Analytics</span></a>
-            <a href="settings.html"> <span>Settings</span></a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <div class="admin-avatar">A</div>
-            <div>
-                <strong>Administrator</strong>
-                <small>Admin Account</small>
-            </div>
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Recent Renewals</h2>
+          <p>Latest customer renewal activity</p>
         </div>
-    </aside>
+        <a class="btn" href="customers.html">View Customers</a>
+      </div>
 
-    <!-- Main dashboard -->
-    <main class="dashboard-main">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Vehicle Number</th>
+              <th>Premium</th>
+              <th>Expiry Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentRenewals"></tbody>
+        </table>
+      </div>
+    </section>
 
-        <header class="dashboard-header">
-            <div>
-                <p class="welcome-label">POPOYE INSURANCE / OVERVIEW</p>
-                <h1>Admin Dashboard</h1>
-                <p class="subtitle">Monitor renewals, payments and customers.</p>
-            </div>
-
-            <a href="customers.html" class="btn btn-primary">
-                + Add Customer
-            </a>
-        </header>
-
-        <!-- Demo notice -->
-        <div class="dashboard-notice">
-            <strong>Demo mode:</strong>
-            Figures below are sample data. No real payments are processed.
-        </div>
-
-        <!-- Statistics cards -->
-        <section class="stats-grid">
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span>Total Customers</span>
-                    <span class="stat-icon blue"></span>
-                </div>
-                <h2 id="totalCustomers">250</h2>
-                <p>Registered customers</p>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span>Active Policies</span>
-                    <span class="stat-icon green"></span>
-                </div>
-                <h2 id="activePolicies">186</h2>
-                <p>Policies currently active</p>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span>Pending Payments</span>
-                    <span class="stat-icon orange"></span>
-                </div>
-                <h2 id="pendingPayments">32</h2>
-                <p>Renewals awaiting payment</p>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span>Premium Collected</span>
-                    <span class="stat-icon purple">↗</span>
-                </div>
-                <h2 id="premiumCollected">₹2.45L</h2>
-                <p>Sample collection total</p>
-            </article>
-
-        </section>
-
-        <!-- Renewal summary -->
-        <section class="dashboard-grid">
-
-            <article class="dashboard-panel">
-                <div class="panel-heading">
-                    <div>
-                        <h2>Renewal Overview</h2>
-                        <p>Sample policy renewal status</p>
-                    </div>
-                    <span class="panel-tag">This month</span>
-                </div>
-
-                <div class="renewal-item">
-                    <div class="renewal-info">
-                        <span>Renewed</span>
-                        <strong>68%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill renewed"></div>
-                    </div>
-                </div>
-
-                <div class="renewal-item">
-                    <div class="renewal-info">
-                        <span>Pending</span>
-                        <strong>22%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill pending"></div>
-                    </div>
-                </div>
-
-                <div class="renewal-item">
-                    <div class="renewal-info">
-                        <span>Expired</span>
-                        <strong>10%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill expired"></div>
-                    </div>
-                </div>
-
-                <a href="policies.html" class="text-link">
-                    View all policies →
-                </a>
-            </article>
-
-            <article class="dashboard-panel">
-                <div class="panel-heading">
-                    <div>
-                        <h2>Quick Actions</h2>
-                        <p>Common insurance tasks</p>
-                    </div>
-                </div>
-
-                <a href="customers.html" class="quick-action">
-                    <span class="action-icon"></span>
-                    <span>
-                        <strong>Manage Customers</strong>
-                        <small>Add and view customer details</small>
-                    </span>
-                    <span class="action-arrow"></span>
-                </a>
-
-                <a href="payments.html" class="quick-action">
-                    <span class="action-icon"></span>
-                    <span>
-                        <strong>Create Payment Link</strong>
-                        <small>Prepare a demo renewal link</small>
-                    </span>
-                    <span class="action-arrow"></span>
-                </a>
-
-                <a href="reminders.html" class="quick-action">
-                    <span class="action-icon"></span>
-                    <span>
-                        <strong>Renewal Reminders</strong>
-                        <small>Prepare WhatsApp messages</small>
-                    </span>
-                    <span class="action-arrow"></span>
-                </a>
-
-                <a href="reports.html" class="quick-action">
-                    <span class="action-icon"></span>
-                    <span>
-                        <strong>View Reports</strong>
-                        <small>Review sample business figures</small>
-                    </span>
-                    <span class="action-arrow"></span>
-                </a>
-            </article>
-
-        </section>
-
-        <!-- Recent transactions -->
-        <section class="dashboard-panel transactions-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Recent Transactions</h2>
-                    <p>Example payment records</p>
-                </div>
-                <a href="transactions.html" class="text-link">
-                    View all →
-                </a>
-            </div>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Transaction ID</th>
-                            <th>Customer</th>
-                            <th>Vehicle Number</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="recentTransactions">
-                        <tr>
-                            <td>DEMO-1001</td>
-                            <td>Arun Kumar</td>
-                            <td>TN 38 AB 1234</td>
-                            <td>₹1,850</td>
-                            <td>Sample date</td>
-                            <td><span class="badge badge-success">Paid (Demo)</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>DEMO-1002</td>
-                            <td>Priya S</td>
-                            <td>TN 37 CD 5678</td>
-                            <td>₹2,100</td>
-                            <td>Sample date</td>
-                            <td><span class="badge badge-warning">Pending</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>DEMO-1003</td>
-                            <td>Karthik R</td>
-                            <td>TN 39 EF 9012</td>
-                            <td>₹1,650</td>
-                            <td>Sample date</td>
-                            <td><span class="badge badge-danger">Failed (Demo)</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <footer class="dashboard-footer">
-            © 2026 Popoye Insurance · Renewal Management System
-        </footer>
-
-    </main>
-
-    <script src="js/dashboard.js"></script>
+    <p class="notice">Demo dashboard: figures are sample data, not live insurance or payment records.</p>
+  </main>
 </body>
 </html>

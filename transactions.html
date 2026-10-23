@@ -2,162 +2,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions | Popoye Insurance</title>
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="transactions.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-
-<div class="dashboard-layout">
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="brand-icon">P</div>
-            <div>
-                <h2>Popoye Insurance</h2>
-                <p>Renewal Management</p>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="customers.html">Customers</a>
-            <a href="policies.html">Policies</a>
-            <a href="payments.html">Payments</a>
-            <a href="transactions.html" class="active">Transactions</a>
-            <a href="reminders.html">WhatsApp Reminders</a>
-            <a href="reports.html">Reports &amp; Analytics</a>
-            <a href="settings.html">Settings</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <p>Demo Administration Panel</p>
-        </div>
-    </aside>
-
-    <!-- Main content -->
-    <main class="dashboard-main">
-
-        <header class="dashboard-header">
-            <div>
-                <p class="page-eyebrow">PAYMENT MANAGEMENT</p>
-                <h1>Transaction History</h1>
-                <p>Review and track two-wheeler insurance renewal payments.</p>
-            </div>
-
-            <a href="payments.html" class="btn btn-primary">
-                + Manage Payments
-            </a>
-        </header>
-
-        <div class="transaction-notice">
-            <strong>Demo mode:</strong>
-            Transactions shown here are stored in this browser only.
-            They are not verified bank or payment-gateway transactions.
-        </div>
-
-        <!-- Summary cards -->
-        <section class="transaction-summary">
-
-            <article class="transaction-stat">
-                <span>Total Transactions</span>
-                <h2 id="transactionTotal">0</h2>
-                <p>All recorded demo payments</p>
-            </article>
-
-            <article class="transaction-stat">
-                <span>Paid Transactions</span>
-                <h2 id="transactionPaid">0</h2>
-                <p>Marked as paid in the demo</p>
-            </article>
-
-            <article class="transaction-stat">
-                <span>Pending Transactions</span>
-                <h2 id="transactionPending">0</h2>
-                <p>Awaiting demo payment</p>
-            </article>
-
-            <article class="transaction-stat">
-                <span>Paid Amount</span>
-                <h2 id="transactionAmount">₹0</h2>
-                <p>Demo records marked as paid</p>
-            </article>
-
-        </section>
-
-        <!-- Transaction table -->
-        <section class="panel transaction-panel">
-
-            <div class="transaction-panel-heading">
-                <div>
-                    <h2>All Transactions</h2>
-                    <p>Search and filter your payment records.</p>
-                </div>
-
-                <button id="refreshTransactions"
-                        class="btn btn-secondary"
-                        type="button">
-                    Refresh
-                </button>
-            </div>
-
-            <div class="transaction-toolbar">
-
-                <input
-                    type="search"
-                    id="transactionSearch"
-                    placeholder="Search ID, customer or vehicle..."
-                    aria-label="Search transactions">
-
-                <select id="transactionStatusFilter"
-                        aria-label="Filter by payment status">
-                    <option value="all">All Statuses</option>
-                    <option value="paid">Paid</option>
-                    <option value="pending">Pending</option>
-                </select>
-
-            </div>
-
-            <p id="transactionMessage" class="transaction-message"
-               role="status" aria-live="polite"></p>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Payment ID</th>
-                            <th>Customer</th>
-                            <th>Vehicle Number</th>
-                            <th>Amount</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="transactionTableBody">
-                        <tr>
-                            <td colspan="6">Loading transactions...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </section>
-
-        <footer class="dashboard-footer">
-            <p>© 2026 Popoye Insurance. Transaction history demo.</p>
-        </footer>
-
-    </main>
-</div>
-
-<script src="js/transactions.js"></script>
-
+  <aside class="sidebar">
+    <div class="brand"><img src="images/logo.png" alt="Logo"><span>Popoye Insurance</span></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a><a href="customers.html">Customers</a>
+      <a href="policies.html">Policies</a><a href="payments.html">Payments</a>
+      <a class="active" href="transactions.html">Transactions</a><a href="reports.html">Reports</a>
+      <a href="automation.html">Automation</a><a href="settings.html">Settings</a>
+    </nav>
+    <div class="sidebar-footer">Two-Wheeler Insurance</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><h1>Transactions</h1><p>Review payment activity and references.</p></div></header>
+    <section class="panel">
+      <div class="section-heading"><h2>Transaction History</h2><input id="transactionSearch" placeholder="Search transaction ID..."></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Transaction ID</th><th>Customer</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th></tr></thead>
+          <tbody id="transactionsTable"></tbody>
+        </table>
+      </div>
+    </section>
+    <p class="notice">Only demo transactions are displayed until a payment gateway is integrated.</p>
+  </main>
 </body>
 </html>
