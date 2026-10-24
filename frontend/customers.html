@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="images/logo.png" alt="Popoye Insurance Logo">
+        <span>Popoye <small>INSURANCE</small></span>
+      </a>
+      <p class="menu-label">WORKSPACE</p>
+      <nav>
+        <a class="nav-link" href="index.html"> Dashboard</a>
+        <a class="nav-link active" href="customers.html"> Customers</a>
+        <a class="nav-link" href="policies.html"> Policies</a>
+        <a class="nav-link" href="payments.html"> Payments</a>
+        <a class="nav-link" href="transactions.html"> Transactions</a>
+        <a class="nav-link" href="reminders.html"> Reminders</a>
+        <a class="nav-link" href="reports.html"> Reports</a>
+        <a class="nav-link" href="settings.html"> Settings</a>
+      </nav>
+      <div class="sidebar-bottom">
+        Two-wheeler insurance
+        <small>Management portal</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">POPOYE / WORKSPACE</span>
+          <h1>Customers</h1>
+        </div>
+        <div class="admin">● <span>Admin</span></div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <h2>Customer Management</h2>
+          <p>Manage customer details and insurance renewals.</p>
+        </div>
+        <button class="btn btn-primary" id="addCustomerBtn">+ Add Customer</button>
+      </section>
+
+      <section class="stats">
+        <div class="stat">
+          <div class="stat-label">Total Customers</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="activeCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Renewals Due</div>
+          <div class="stat-value" id="dueCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Expired</div>
+          <div class="stat-value" id="expiredCount">0</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>All Customers</h2>
+          <button class="btn" id="exportBtn">↓ Export CSV</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="searchInput" class="search"
+            placeholder="Search name, phone, ID or vehicle...">
+
+          <select id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Due">Due</option>
+            <option value="Expired">Expired</option>
+          </select>
+
+          <select id="policyFilter">
+            <option value="">All Policy Types</option>
+            <option value="Comprehensive">Comprehensive</option>
+            <option value="Third Party">Third Party</option>
+          </select>
+
+          <button class="btn" id="resetBtn">Reset</button>
+        </div>
+
+        <div id="customerTable" class="table-wrap"></div>
+
+        <div class="pagination">
+          <span id="pageInfo" class="muted small"></span>
+          <div class="page-buttons" id="pagination"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="customerFormPanel" hidden>
+        <div class="panel-head">
+          <h2>Add New Customer</h2>
+          <button class="btn" id="cancelBtn">Cancel</button>
+        </div>
+
+        <form id="customerForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="customerName">Customer Name</label>
+              <input id="customerName" required>
+            </div>
+            <div class="field">
+              <label for="customerPhone">Phone Number</label>
+              <input id="customerPhone" type="tel"
+                pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+            <div class="field">
+              <label for="vehicleNumber">Vehicle Number</label>
+              <input id="vehicleNumber" required>
+            </div>
+            <div class="field">
+              <label for="policyType">Policy Type</label>
+              <select id="policyType" required>
+                <option value="Comprehensive">Comprehensive</option>
+                <option value="Third Party">Third Party</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="premium">Premium (₹)</label>
+              <input id="premium" type="number" min="1" required>
+            </div>
+            <div class="field">
+              <label for="expiryDate">Policy Expiry Date</label>
+              <input id="expiryDate" type="date" required>
+            </div>
+          </div>
+          <br>
+          <button class="btn btn-primary" type="submit">Save Customer</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="customers.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policies | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link active" href="policies.html">Policies</a>
+      <a class="nav-link" href="payments.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link" href="reminders.html">Reminders</a>
+      <a class="nav-link" href="reports.html">Reports</a>
+      <a class="nav-link" href="settings.html">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Policies</h1>
+        <p>Manage two-wheeler insurance policies.</p>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <span>Total Policies</span>
+        <h2 id="totalPolicies">0</h2>
+      </div>
+      <div class="stat">
+        <span>Active Policies</span>
+        <h2 id="activePolicies">0</h2>
+      </div>
+      <div class="stat">
+        <span>Expiring Soon</span>
+        <h2 id="expiringPolicies">0</h2>
+      </div>
+      <div class="stat">
+        <span>Expired Policies</span>
+        <h2 id="expiredPolicies">0</h2>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <input
+          type="search"
+          id="policySearch"
+          placeholder="Search policy, customer or vehicle..."
+        >
+
+        <select id="typeFilter">
+          <option value="">All Policy Types</option>
+          <option value="Comprehensive">Comprehensive</option>
+          <option value="Third Party">Third Party</option>
+          <option value="Own Damage">Own Damage</option>
+        </select>
+
+        <select id="statusFilter">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Expiring Soon">Expiring Soon</option>
+          <option value="Expired">Expired</option>
+        </select>
+
+        <button class="btn" id="resetFilters" type="button">
+          Reset Filters
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Policy ID</th>
+              <th>Customer</th>
+              <th>Vehicle Number</th>
+              <th>Policy Type</th>
+              <th>Premium</th>
+              <th>Start Date</th>
+              <th>Expiry Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="policiesTable"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span id="policyPageInfo">Page 1</span>
+        <div>
+          <button class="btn" id="previousPage" type="button">Previous</button>
+          <button class="btn" id="nextPage" type="button">Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="policies.js"></script>
+</body>
+</html>

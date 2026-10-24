@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link" href="policies.html">Policies</a>
+      <a class="nav-link" href="payments.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link" href="reminders.html">Reminders</a>
+      <a class="nav-link active" href="reports.html">Reports</a>
+      <a class="nav-link" href="settings.html">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Reports</h1>
+        <p>Review payment performance and insurance renewals.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h3>Report Filters</h3>
+
+      <div class="toolbar">
+        <div>
+          <label for="reportStartDate">Start Date</label>
+          <input type="date" id="reportStartDate">
+        </div>
+
+        <div>
+          <label for="reportEndDate">End Date</label>
+          <input type="date" id="reportEndDate">
+        </div>
+
+        <select id="reportStatusFilter">
+          <option value="">All Payment Statuses</option>
+          <option value="Successful">Successful</option>
+          <option value="Pending">Pending</option>
+          <option value="Failed">Failed</option>
+        </select>
+
+        <button class="btn" id="generateReport" type="button">
+          Generate Report
+        </button>
+
+        <button class="btn" id="exportReport" type="button">
+          Export CSV
+        </button>
+
+        <button class="btn" id="resetReport" type="button">
+          Reset
+        </button>
+      </div>
+
+      <p id="reportMessage" role="status"></p>
+    </section>
+
+    <section class="stats">
+      <div class="stat">
+        <span>Total Payments</span>
+        <h2 id="reportTotalPayments">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Successful Payments</span>
+        <h2 id="reportSuccessfulPayments">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Pending Payments</span>
+        <h2 id="reportPendingPayments">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Failed Payments</span>
+        <h2 id="reportFailedPayments">0</h2>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stat">
+        <span>Successful Revenue</span>
+        <h2 id="reportRevenue">₹0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Pending Amount</span>
+        <h2 id="reportPendingAmount">₹0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Failed Amount</span>
+        <h2 id="reportFailedAmount">₹0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Success Rate</span>
+        <h2 id="reportSuccessRate">0%</h2>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Payment Report</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Payment ID</th>
+              <th>Customer</th>
+              <th>Vehicle Number</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="reportTable"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span id="reportPageInfo">Page 1</span>
+        <div>
+          <button class="btn" id="previousReportPage" type="button">
+            Previous
+          </button>
+          <button class="btn" id="nextReportPage" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="reports.js"></script>
+</body>
+</html>

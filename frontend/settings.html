@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link" href="policies.html">Policies</a>
+      <a class="nav-link" href="payments.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link" href="reminders.html">Reminders</a>
+      <a class="nav-link" href="reports.html">Reports</a>
+      <a class="nav-link active" href="settings.html">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Settings</h1>
+        <p>Manage your insurance business preferences.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h3>Business Information</h3>
+      <p>Update your business contact details.</p>
+
+      <form id="businessSettingsForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="businessName">Business Name</label>
+            <input
+              type="text"
+              id="businessName"
+              name="businessName"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="businessEmail">Business Email</label>
+            <input
+              type="email"
+              id="businessEmail"
+              name="businessEmail"
+            >
+          </div>
+
+          <div class="field">
+            <label for="businessPhone">Contact Number</label>
+            <input
+              type="tel"
+              id="businessPhone"
+              name="businessPhone"
+            >
+          </div>
+
+          <div class="field">
+            <label for="businessAddress">Business Address</label>
+            <input
+              type="text"
+              id="businessAddress"
+              name="businessAddress"
+            >
+          </div>
+        </div>
+
+        <button class="btn" type="submit">Save Business Details</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h3>Renewal Reminder Preferences</h3>
+      <p>Choose how the prototype should display reminder preferences.</p>
+
+      <form id="reminderSettingsForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="reminderDays">Remind Before Expiry</label>
+            <select id="reminderDays" name="reminderDays">
+              <option value="7">7 days before</option>
+              <option value="15">15 days before</option>
+              <option value="30">30 days before</option>
+              <option value="45">45 days before</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="reminderChannel">Preferred Channel</label>
+            <select id="reminderChannel" name="reminderChannel">
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="SMS">SMS</option>
+              <option value="Both">WhatsApp and SMS</option>
+            </select>
+          </div>
+        </div>
+
+        <label>
+          <input type="checkbox" id="enableReminders">
+          Enable renewal reminders
+        </label>
+
+        <br><br>
+
+        <button class="btn" type="submit">Save Reminder Preferences</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h3>Display Preferences</h3>
+      <p>Choose your preferred dashboard appearance.</p>
+
+      <form id="displaySettingsForm">
+        <div class="field">
+          <label for="themePreference">Website Theme</label>
+          <select id="themePreference" name="themePreference">
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
+        </div>
+
+        <br>
+
+        <button class="btn" type="submit">Save Display Settings</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="settings.js"></script>
+</body>
+</html>

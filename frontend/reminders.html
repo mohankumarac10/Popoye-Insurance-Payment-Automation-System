@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reminders | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link" href="policies.html">Policies</a>
+      <a class="nav-link" href="payments.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link active" href="reminders.html">Reminders</a>
+      <a class="nav-link" href="reports.html">Reports</a>
+      <a class="nav-link" href="settings.html">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Renewal Reminders</h1>
+        <p>Track and manage upcoming insurance renewals.</p>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <span>Total Reminders</span>
+        <h2 id="totalReminders">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Upcoming</span>
+        <h2 id="upcomingReminders">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Sent</span>
+        <h2 id="sentReminders">0</h2>
+      </div>
+
+      <div class="stat">
+        <span>Overdue</span>
+        <h2 id="overdueReminders">0</h2>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <input
+          type="search"
+          id="reminderSearch"
+          placeholder="Search customer, vehicle or reminder ID..."
+        >
+
+        <select id="reminderStatusFilter">
+          <option value="">All Reminder Statuses</option>
+          <option value="Upcoming">Upcoming</option>
+          <option value="Sent">Sent</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+
+        <button class="btn" id="resetReminderFilters" type="button">
+          Reset Filters
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Reminder ID</th>
+              <th>Customer</th>
+              <th>Vehicle Number</th>
+              <th>Expiry Date</th>
+              <th>Channel</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="remindersTable"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span id="reminderPageInfo">Page 1</span>
+        <div>
+          <button class="btn" id="previousReminderPage" type="button">
+            Previous
+          </button>
+          <button class="btn" id="nextReminderPage" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="reminders.js"></script>
+</body>
+</html>

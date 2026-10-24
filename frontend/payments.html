@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments | Popoye Insurance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="images/logo.png" alt="Popoye Insurance Logo">
+      <span>Popoye Insurance</span>
+    </div>
+
+    <nav>
+      <a class="nav-link" href="index.html">Dashboard</a>
+      <a class="nav-link" href="customers.html">Customers</a>
+      <a class="nav-link" href="policies.html">Policies</a>
+      <a class="nav-link active" href="payments.html">Payments</a>
+      <a class="nav-link" href="transactions.html">Transactions</a>
+      <a class="nav-link" href="reminders.html">Reminders</a>
+      <a class="nav-link" href="reports.html">Reports</a>
+      <a class="nav-link" href="settings.html">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Payments</h1>
+        <p>Track insurance renewal payments.</p>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <span>Total Payments</span>
+        <h2 id="totalPayments">0</h2>
+      </div>
+      <div class="stat">
+        <span>Successful</span>
+        <h2 id="successfulPayments">0</h2>
+      </div>
+      <div class="stat">
+        <span>Pending</span>
+        <h2 id="pendingPayments">0</h2>
+      </div>
+      <div class="stat">
+        <span>Failed</span>
+        <h2 id="failedPayments">0</h2>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <input
+          type="search"
+          id="paymentSearch"
+          placeholder="Search payment, customer or vehicle..."
+        >
+
+        <select id="paymentStatusFilter">
+          <option value="">All Payment Statuses</option>
+          <option value="Successful">Successful</option>
+          <option value="Pending">Pending</option>
+          <option value="Failed">Failed</option>
+        </select>
+
+        <select id="paymentMethodFilter">
+          <option value="">All Payment Methods</option>
+          <option value="UPI">UPI</option>
+          <option value="Card">Card</option>
+          <option value="Net Banking">Net Banking</option>
+        </select>
+
+        <button class="btn" id="resetPaymentFilters" type="button">
+          Reset Filters
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Payment ID</th>
+              <th>Customer</th>
+              <th>Vehicle Number</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTable"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span id="paymentPageInfo">Page 1</span>
+        <div>
+          <button class="btn" id="previousPaymentPage" type="button">
+            Previous
+          </button>
+          <button class="btn" id="nextPaymentPage" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <script src="payments.js"></script>
+</body>
+</html>
